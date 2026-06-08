@@ -34,4 +34,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ./souqi/ # المسار الصحيح بناءً على صورة مدير الملفات
+          server-dir: ./domains/voyexa.online/public_html/souqi/.
