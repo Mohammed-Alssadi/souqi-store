@@ -38,22 +38,22 @@ function BestSelling() {
   return (
     <div className="mt-1">
       {/* 🔹 العنوان والرابط */}
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <p className="text-center text-2xl md:text-4xl font-semibold text-foreground md:text-start md:pt-8 md:mb-4">
+      <div className="flex  md:flex-row justify-between items-center py-2 md:mb-6">
+        <p className="text-center text-xl md:text-4xl font-semibold text-foreground md:text-start">
           {t('home.bestSelling', 'Best Selling')}
         </p>
         <Link
           to="/products"
-          className="text-muted-foreground hover:text-foreground font-medium text-lg md:pt-6 md:mt-8 py-4 md:me-6 pe-5 flex items-center"
+          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-xl flex items-center"
         >
           {t('home.seeAll', 'See All')}
-          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-2xl text-primary`} />
+          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-lg text-primary`} />
         </Link>
       </div>
 
       {/* ⏳ أثناء التحميل */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 5 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
@@ -79,11 +79,12 @@ function BestSelling() {
               loop={true} // يجعل السلايدر دائري
               grabCursor={true} // يجعل المؤشر بشكل اليد عند السحب
               breakpoints={{
-                1400: { slidesPerView: 5 },
-                1200: { slidesPerView: 4 },
-                992: { slidesPerView: 3 },
-                768: { slidesPerView: 2 },
-                0: { slidesPerView: 1 },
+                1400: { slidesPerView: 5, spaceBetween: 20 },
+                1200: { slidesPerView: 4, spaceBetween: 20 },
+                992: { slidesPerView: 3, spaceBetween: 20 },
+                768: { slidesPerView: 3, spaceBetween: 15 },
+                480: { slidesPerView: 3, spaceBetween: 15 },
+                0: { slidesPerView: 2, spaceBetween: 10 },
               }}
               className="pb-2 mb-8 p overflow-hidden"
             >

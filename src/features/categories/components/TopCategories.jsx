@@ -26,23 +26,23 @@ function TopCategories() {
   return (
     <>
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-6">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 5 }).map((_, i) => (
             <CategoryCardSkeleton key={i} />
           ))}
         </div>
       ) : categories.length > 0 ? (
         <div className="mt-2 mx-0">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-            <p className="text-center text-2xl md:text-4xl font-semibold text-foreground md:text-start">
+          <div className="flex  md:flex-row justify-between items-center md:mb-6 mb-0">
+            <p className="text-center text-xl md:text-4xl font-semibold text-foreground md:text-start">
               {t('home.topCategories', 'Top Categories')}
             </p>
             <Link
               to="/categories"
-              className="text-muted-foreground hover:text-foreground font-medium text-lg flex items-center"
+              className="text-muted-foreground hover:text-foreground font-medium text-md md:text-lg  flex items-center"
             >
               {t('home.seeAll', 'See All')}
-              <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-2xl text-primary`} />
+              <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-xl text-primary`} />
             </Link>
           </div>
 
@@ -58,12 +58,13 @@ function TopCategories() {
             loop={true}
             grabCursor={true}
             breakpoints={{
-              1400: { slidesPerView: 6 },
-              1200: { slidesPerView: 5 },
-              992: { slidesPerView: 4 },
-              768: { slidesPerView: 3 },
-              575: { slidesPerView: 2 },
-              0: { slidesPerView: 1 },
+              1400: { slidesPerView: 6, spaceBetween: 20 },
+              1200: { slidesPerView: 5, spaceBetween: 20 },
+              992: { slidesPerView: 4, spaceBetween: 20 },
+              768: { slidesPerView: 3, spaceBetween: 15 },
+              575: { slidesPerView: 3, spaceBetween: 15 },
+              480: { slidesPerView: 3, spaceBetween: 10 },
+              0: { slidesPerView: 3, spaceBetween: 10 },
             }}
             className="pb-2 mb-8 px-4 overflow-hidden"
           >

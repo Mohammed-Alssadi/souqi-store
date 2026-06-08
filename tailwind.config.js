@@ -47,6 +47,10 @@ export default {
       fontFamily: {
         sans: ['Cairo', 'Inter', 'sans-serif'],
         brand: ['Lalezar', 'cursive'],
+        'logo-first-en': ['"Playfair Display"', 'serif'],
+        'logo-rest-en': ['"Montserrat"', 'sans-serif'],
+        'logo-first-ar': ['"Aref Ruqaa"', 'serif'],
+        'logo-rest-ar': ['"Alexandria"', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

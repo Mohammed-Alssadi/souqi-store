@@ -38,12 +38,12 @@ function AllCategories() {
         <div className="min-h-[60vh]">
 
 
-            <h1 className='my-4 text-3xl font-semibold text-gray-800 '> {t('categories.allCategories', 'All Categories')}</h1>
+            <h1 className='my-4 text-3xl font-semibold  '> {t('categories.allCategories', 'All Categories')}</h1>
 
 
 
             {loading ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-3 md:gap-4">
                     {categories.map((cat) => {
                         return <CategoryCardSkeleton key={cat.id} />
                     })}
@@ -51,7 +51,7 @@ function AllCategories() {
 
             ) : (
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-8">
+                <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-3 md:gap-8">
                     {categories.map((cat) => {
                         return <CategoryCard key={cat.id} category={cat} />
 

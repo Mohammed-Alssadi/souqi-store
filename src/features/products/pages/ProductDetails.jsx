@@ -98,7 +98,7 @@ function ProductDetails() {
         </div>
 
         {/* العمود الثاني: التفاصيل */}
-        <div className="flex flex-col justify-center items-center ps-6    md:justify-around  lg:items-start   mt-2 md:mt-3 md:pt-3  ">
+        <div className="flex flex-col justify-center items-start text-start md:justify-around mt-4 md:mt-3 md:pt-3">
           <div>
             <h1 className=" lg:text-3xl text-xl md:text-4xl font-bold text-foreground mb-4">
               {localizedTitle}
@@ -146,7 +146,7 @@ function ProductDetails() {
             </p>
 
             {/* التصنيف والمبيعات */}
-            <div className="grid grid-cols-1 md:grid-cols-3 md:gap-10 gap-6  mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 md:gap-10 gap-5 mb-6 w-full">
               <div>
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                   {t('product.category', 'Category')}
@@ -198,17 +198,17 @@ function ProductDetails() {
           </div>
 
           {/* زر الإضافة للسلة */}
-          <div className="flex   flex-col  md:flex-row items-center justify-between gap-4  pb-5">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 w-full mt-4">
             <button
               onClick={() => addToCart(product)}
-              className="flex items-center justify-center  gap-2 bg-primary text-primary-foreground rounded-[15px] px-6 py-3 font-semibold hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-lg"
+              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-[15px] px-6 py-3 font-semibold hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-lg"
             >
               <ShoppingCart size={22} />
               {t('product.addToCart', 'Add to Cart')}
             </button>
             <button
               onClick={() => addToCart(product)}
-              className="  flex items-center justify-center border border-primary  gap-2  text-primary rounded-[17px] px-7 py-3 font-semibold hover:bg-primary  hover:text-primary-foreground  active:scale-95 transition-all duration-200 "
+              className="flex-1 flex items-center justify-center border border-primary gap-2 text-primary rounded-[17px] px-7 py-3 font-semibold hover:bg-primary hover:text-primary-foreground active:scale-95 transition-all duration-200"
             >
               <CreditCard size={22} />
               {t('product.buyNow', 'Buy Now')}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useProductStore } from "../../features/products/store";
 import { useCartStore } from "../../features/cart/store";
 import { useAuthStore } from "../../features/auth/store";
@@ -25,7 +25,14 @@ function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
+  const location = useLocation();
+  const [searchInput, setSearchInput] = useState(location.state?.q || "");
+  
+  // مزامنة مربع البحث مع حالة المتصفح (State) بدلاً من الرابط
+  useEffect(() => {
+    setSearchInput(location.state?.q || "");
+  }, [location.state?.q]);
+
   const [cartOpen, setCartOpen] = useState(false);
 
   // ===================== الإعدادات العامة =====================
@@ -51,7 +58,7 @@ function Navbar() {
 
   // ===================== تأثير التمرير =====================
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -60,20 +67,17 @@ function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchInput.trim() === "") return;
-    setSearchTerm(searchInput.trim());
-    navigate("/search");
+    // تحديث احترافي: إخفاء البحث من الرابط وتمريره كـ State للحفاظ على الخصوصية والمظهر النظيف
+    navigate(`/search`, { state: { q: searchInput.trim() } });
     setIsSearchOpen(false);
-    setSearchInput("");
   };
 
   // ===================== JSX =====================
   return (
     <>
-      {/* مساحة لتعويض الهيدر الثابت */}
-      <div className="h-32"></div>
 
       <header
-        className={`fixed top-0 start-0 end-0 z-50 w-full transition-all duration-500 bg-background`}
+        className={`sticky top-0 start-0 end-0 z-50 w-full transition-colors duration-500 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 border-b border-border shadow-sm`}
       >
         {/* الشريط العلوي */}
         {/* <div className={`bg-primary px-4 py-2 ${isScrolled ? "hidden" : ""}`}>
@@ -98,44 +102,30 @@ function Navbar() {
         </div> */}
 
         {/* الهيدر الرئيسي */}
-        <div className="py-5  bg-white dark:bg-gray-800">
-          <div className="container mx-3 md:mx-auto px-1 flex items-center justify-between">
+        <div className={`transition-all duration-300 ${isScrolled ? "py-3 md:py-3" : "py-3 md:py-5"}`}>
+          <div className="w-full px-4 md:container md:mx-auto flex items-center justify-between">
             {/* الشعار */}
             <Link
               to="/"
-              className="text-3xl md:text-4xl font-black tracking-tighter flex items-center"
+              className="flex items-center group"
             >
               {i18n.language.startsWith('ar') ? (
-                <div className="flex items-baseline font-brand tracking-normal">
-                  <span className="bg-gradient-to-br from-primary to-pink-500 bg-clip-text text-transparent text-4xl md:text-5xl drop-shadow-sm pe-1 font-normal leading-none pb-2 pt-1">زيكو</span>
-                  <span className="text-primary text-3xl md:text-4xl leading-none">.</span>
+                <div className="flex items-center font-logo-rest-ar font-black" dir="rtl">
+                  {/* استخدام نفس الخط للكلمة العربية لضمان اتصال الحروف بشكل مثالي بدون تداخل */}
+                  <span className="text-primary text-3xl md:text-4xl leading-none">س&zwj;</span>
+                  <span className="text-foreground text-3xl md:text-4xl leading-none tracking-tight">&zwj;وقي</span>
+                  <span className="text-primary text-3xl md:text-4xl leading-none ms-1 group-hover:animate-bounce inline-block">.</span>
                 </div>
               ) : (
-                <div className="flex items-baseline font-brand tracking-normal">
-                  <span className="bg-gradient-to-br from-primary to-pink-500 bg-clip-text text-transparent text-4xl md:text-5xl drop-shadow-sm font-normal leading-none pb-2 pt-1">Z</span>
-                  <span className="text-foreground font-normal leading-none">eco</span>
-                  <span className="text-primary text-4xl leading-none">.</span>
+                <div className="flex items-baseline transform -translate-y-1.5 md:-translate-y-3" dir="ltr">
+                  <span className="text-primary text-4xl md:text-5xl font-logo-first-en italic font-black leading-none transform group-hover:scale-105 transition-transform inline-block">S</span>
+                  <span className="text-foreground text-xl md:text-2xl font-logo-rest-en font-extrabold leading-none uppercase tracking-[0.15em] ms-0.5">ouqi</span>
+                  <span className="text-primary text-4xl md:text-5xl leading-none font-black ms-0.5 group-hover:animate-bounce inline-block">.</span>
                 </div>
               )}
             </Link>
 
-            {/* بحث الجوال */}
-            <div className="lg:hidden ms-auto me-2 pt-2 flex items-center gap-2">
-              <ThemeToggle />
-              <button
-                onClick={() => changeLanguage(i18n.language.startsWith('ar') ? 'en' : 'ar')}
-                className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors text-sm font-bold"
-              >
-                <Globe size={18} />
-                {i18n.language.startsWith('ar') ? 'EN' : 'عربي'}
-              </button>
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="px-2 text-foreground hover:bg-accent rounded-full"
-              >
-                <Search size={26} />
-              </button>
-            </div>
+
 
             {/* نافذة البحث للجوال */}
             {isSearchOpen && (
@@ -200,27 +190,37 @@ function Navbar() {
 
             {/* الأيقونات */}
             <div
-              className="flex items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 ms-2"
+              className="flex items-center gap-4 sm:gap-5 md:gap-6 ms-1 md:ms-2"
               onMouseLeave={() =>
                 setTimeout(() => setIsUserMenuOpen(false), 5000)
               }
             >
+              {/* أيقونة البحث للجوال */}
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="lg:hidden text-foreground hover:text-primary transition-colors p-1"
+              >
+                <Search size={24} />
+              </button>
+
               {/* أيقونة السلة */}
-              <div className="relative">
+              <div className="relative p-1">
                 <ShoppingCart
                   onClick={() => setCartOpen(true)}
-                  size={28}
-                  className="text-foreground hover:text-primary cursor-pointer"
+                  size={26}
+                  className="text-foreground hover:text-primary cursor-pointer transition-colors"
                 />
                 <Cart visible={cartOpen} setvisible={setCartOpen} />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -end-3 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -end-1.5 bg-primary text-primary-foreground text-[11px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm">
                     {itemCount}
                   </span>
                 )}
               </div>
 
-              <ThemeToggle />
+              <div className="hidden lg:block">
+                <ThemeToggle />
+              </div>
 
               {/* Language Switch */}
               <button
@@ -228,7 +228,7 @@ function Navbar() {
                 className="hidden lg:flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-full hover:bg-primary/20 transition-colors font-bold text-sm"
               >
                 <Globe size={18} />
-                {i18n.language.startsWith('ar') ? 'EN' : 'عربي'}
+                {i18n.language.startsWith('ar') ? 'EN' : 'AR'}
               </button>
 
               {/* أزرار تسجيل الدخول / الخروج */}
@@ -251,18 +251,48 @@ function Navbar() {
 
               {/* قائمة الجوال */}
               <button
-                className="lg:hidden text-foreground hover:bg-accent rounded-full ms-3"
+                className="lg:hidden text-foreground hover:text-primary transition-colors p-1"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={28} />}
+                {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
               </button>
             </div>
           </div>
 
           {/* القائمة المنسدلة للجوال */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden bg-card border-t border-border">
-              <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
+            <>
+              {/* خلفية معتمة (Overlay) */}
+              <div 
+                className="fixed inset-0 top-[76px] bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+                onClick={() => setIsMobileMenuOpen(false)}
+              ></div>
+              
+              {/* حاوية القائمة */}
+              <div className="absolute top-full start-0 end-0 lg:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-2xl border-t border-b border-border z-50">
+                <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
+                {/* إعدادات المظهر واللغة للموبايل */}
+                <div className="grid grid-cols-2 gap-3 pb-4 mb-2 border-b border-border mt-2">
+                  
+                  {/* بطاقة المظهر */}
+                  <div className="flex items-center justify-between bg-secondary/30 dark:bg-secondary/10 border border-border/40 rounded-2xl p-1.5 ps-4 shadow-sm">
+                    <span className="text-sm font-bold text-foreground">{i18n.language.startsWith('ar') ? 'المظهر' : 'Theme'}</span>
+                    <ThemeToggle />
+                  </div>
+
+                  {/* بطاقة اللغة */}
+                  <button
+                    onClick={() => { changeLanguage(i18n.language.startsWith('ar') ? 'en' : 'ar'); setIsMobileMenuOpen(false); }}
+                    className="flex items-center justify-between bg-primary/10 border border-primary/20 rounded-2xl p-1.5 ps-4 shadow-sm hover:bg-primary/20 transition-all group"
+                  >
+                    <span className="text-sm font-bold text-primary">{i18n.language.startsWith('ar') ? 'English' : 'عربي'}</span>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white dark:bg-gray-800 shadow-sm border border-primary/10">
+                      <Globe size={18} className="text-primary group-hover:rotate-12 transition-transform" />
+                    </div>
+                  </button>
+
+                </div>
+
                 {[
                   { name: t('navbar.home'), path: "" },
                   { name: t('navbar.categories'), path: "categories" },
@@ -298,6 +328,7 @@ function Navbar() {
                 )}
               </div>
             </div>
+            </>
           )}
         </div>
       </header>

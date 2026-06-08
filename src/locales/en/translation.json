@@ -8,7 +8,23 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "welcome": "Welcome, {{name}}"
+    "welcome": "Welcome, {{name}}",
+    "about": "About",
+    "contact": "Contact Us",
+    "faqs": "FAQs"
+  },
+  "footer": {
+    "subscribe": "Subscribe to Our Newsletter",
+    "subscribeSub": "Get the latest updates on new products and upcoming sales.",
+    "yourEmail": "Your email address...",
+    "subscribeBtn": "Subscribe",
+    "aboutText": "Your ultimate destination for premium quality products. We provide the best shopping experience with secure payments and fast delivery worldwide.",
+    "pages": "Quick Links",
+    "contactUs": "Contact Us",
+    "address": "Yemen - Sana'a, Al-Tahrir Street",
+    "copyright": "Copyright © 2026 Souqi Store. All Rights Reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -37,5 +53,22 @@
       "confirmPasswordRequired": "Please confirm your password",
       "passwordsDontMatch": "Passwords don't match"
     }
+  },
+  "delivery": {
+    "sectionTitle": "Why Shop With Us?",
+    "sectionDesc": "We offer the best services to ensure a comfortable and secure shopping experience for all our customers.",
+    "discount": "Discount",
+    "discountDesc": "New sales every week",
+    "freeDelivery": "Free Delivery",
+    "freeDeliveryDesc": "100% Free for all orders",
+    "support": "Great Support 24/7",
+    "supportDesc": "We care about your experiences",
+    "securePayment": "Secure Payment",
+    "securePaymentDesc": "100% Secure Payment Method"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "desc": "Sorry, we couldn’t find the page you’re looking for. It might have been moved or deleted.",
+    "button": "Back to Home"
   }
 }

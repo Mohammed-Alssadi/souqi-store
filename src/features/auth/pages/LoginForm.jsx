@@ -44,11 +44,11 @@ function LoginForm() {
   };
 
   return (
-    <div className="-mx-4 sm:mx-0 min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background sm:bg-background py-8 sm:py-6 px-0 sm:px-4">
-      <div className="max-w-md w-full bg-card sm:rounded-3xl shadow-lg sm:shadow-2xl px-6 sm:p-8 border border-border/50 sm:border-2">
+    <div className="min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background md:py-12 md:px-4">
+      <div className="max-w-md w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
         <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">
-            <LogIn size={28} className="sm:w-8 sm:h-8" />
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">
+            <LogIn size={24} className="sm:w-8 sm:h-8" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{t('auth.welcomeBack')}</h2>
           <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">{t('auth.signInToAccount')}</p>

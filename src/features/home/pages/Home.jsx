@@ -16,11 +16,11 @@ function Home() {
 
 
   return (
-    <div className='container mx-auto px-5'>
+    <div className='w-full px-0  md:container md:mx-auto md:px-5'>
      <HeroBaner/>
 
        
-        <div id="categories" className=" mt-8 pt-8 ">
+        <div id="categories" className="mt-5 pt-5 md:mt-10 md:pt-10">
        
          <TopCategories />
         </div>

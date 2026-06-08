@@ -5,47 +5,47 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 330 81% 60%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 330 81% 60%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 47.4% 11.2%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 47.4% 11.2%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 330 81% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -63,66 +63,65 @@
   }
   
   .font-brand, .font-brand * {
-    font-family: 'Lalezar', cursive !important;
+    font-family: 'Alexandria', sans-serif !important;
   }
   /* Fix Chrome Autofill in Dark Mode */
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
   input:-webkit-autofill:focus, 
-  input:-webkit-autofill:active{
+  input:-webkit-autofill:active {
       -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
       -webkit-text-fill-color: hsl(var(--foreground)) !important;
       transition: background-color 5000s ease-in-out 0s;
   }
 }
-    
 
-.custom-dot{
-  background-color:#0a6ec09f;
+.custom-dot {
+  background-color: hsl(var(--primary) / 0.5);
 }
 .custom-dot:hover {
   transform: scale(1.2);
-  background-color: #3490dc; /* أي لون تحبه */
+  background-color: hsl(var(--primary));
   opacity: 1;
 }
 
 .slick-dots li.slick-active div {
-  background-color: #3490dc;
+  background-color: hsl(var(--primary));
   opacity: 1;
   transform: scale(1.3);
 }
 
 
-.swiper {
 
- 
-}
 /* الأسهم العامة */
 .custom-carousel .p-carousel-prev,
 .custom-carousel .p-carousel-next {
   overflow: hidden;
   top: 50%;
   transform: translateY(50%);
-  color: brown !important;
+  color: hsl(var(--foreground)) !important;
   border-radius: 50%;
-  background-color: #c3d0d1 !important;
+  background-color: hsl(var(--secondary)) !important;
   width: 40px;       /* عرض السهم */
   height: 40px;      /* ارتفاع السهم */
- /* حجم أيقونة السهم */
- 
   align-items: center;
-
   z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.custom-carousel .p-carousel-prev:hover,
+.custom-carousel .p-carousel-next:hover {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
 
 /* الأسهم للهاتف (الشاشات ≤ 768px) */
 @media (max-width: 768px) {
   .custom-carousel .p-carousel-prev,
   .custom-carousel .p-carousel-next {
-     transform: translateY(50%);
+    transform: translateY(50%);
     width: 12px;
     height: 20px;
-   
     left: 0px;       /* المسافة عن الجانب الأيسر */
     right: 0px; 
     padding: 0px;     /* المسافة عن الجانب الأيمن */
@@ -131,7 +130,7 @@
 
 /* النقاط العامة */
 .custom-carousel .p-carousel-indicators .p-carousel-indicator button {
-  background-color: #9ca3af !important;
+  background-color: hsl(var(--muted-foreground) / 0.5) !important;
   width: 12px !important;                      
   height: 12px !important;
   border-radius: 50% !important;
@@ -152,18 +151,16 @@
   }
 }
 
-
-
-
-.slider_container>.slick-slider>.slick-dots>li.slick-active button:before {
+.slider_container > .slick-slider > .slick-dots > li.slick-active button:before {
     color: hsl(var(--primary)) !important;
 }
+
 /* تغيير لون النقاط */
-.slick-dots li button::before{
-  margin-top: 35px!important;
+.slick-dots li button::before {
+  margin-top: 35px !important;
 }
 .slick-dots li button:before {
-  color: #9ca3af !important;
+  color: hsl(var(--muted-foreground)) !important;
   opacity: 1 !important;
   font-size: 10px !important;
 }
@@ -172,6 +169,7 @@
 .slick-dots li.slick-active button:before {
   color: hsl(var(--primary)) !important;
 }
+
 /* تحسين شكل أزرار الـ Pagination من PrimeReact */
 .custom-dataview .p-paginator {
   display: flex;
@@ -185,9 +183,9 @@
 .custom-dataview .p-paginator .p-paginator-prev,
 .custom-dataview .p-paginator .p-paginator-next {
   border: none;
-  background-color: #992227 !important; /* رمادي فاتح */
-  color: #333 !important ;
-  width: 36px !important ;
+  background-color: hsl(var(--muted)) !important; 
+  color: hsl(var(--foreground)) !important;
+  width: 36px !important;
   height: 36px;
   font-weight: 600;
   border-radius: 50%;
@@ -197,18 +195,17 @@
 .custom-dataview .p-paginator .p-paginator-page:hover,
 .custom-dataview .p-paginator .p-paginator-prev:hover,
 .custom-dataview .p-paginator .p-paginator-next:hover {
-  background-color: #1e293b; /* أزرق غامق */
-  color:yellow;
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   transform: scale(1.05);
 }
 
 /* الصفحة النشطة */
 .custom-dataview .p-paginator .p-highlight {
-  background-color: #0ea5e9 !important; /* سماوي */
-  color: #fff !important;
-  box-shadow: 0 2px 8px rgba(14,165,233,0.4);
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 /* === إصلاح موضع الأسهم في PrimeReact Carousel === */
 .p-carousel {
@@ -222,9 +219,16 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
-  background-color: white;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.p-carousel-prev:hover,
+.p-carousel-next:hover {
+  background-color: hsl(var(--secondary));
 }
 
 .p-carousel-prev {
@@ -241,5 +245,3 @@
     display: none;
   }
 }
-
-

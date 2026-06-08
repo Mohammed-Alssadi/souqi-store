@@ -32,24 +32,24 @@ function ForYouSection() {
   }, [products]);
 
   return (
-    <div className="mt-20">
+    <div className="mt-2">
       {/* العنوان ورابط "See All" */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h2 className="text-center text-2xl md:text-4xl font-semibold text-foreground md:text-start">
+      <div className="flex md:flex-row justify-between items-center py-2 md:mb-6 ">
+        <h2 className="text-center text-lg md:text-4xl font-semibold text-foreground md:text-start">
           {t('home.forYou', 'Just For You')}
         </h2>
         <Link
           to="/products"
-          className="text-muted-foreground hover:text-foreground font-medium text-lg flex items-center"
+          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-lg py-2    flex items-center"
         >
           {t('home.seeAll', 'See All')}
-          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-2xl text-primary`} />
+          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-xl text-primary`} />
         </Link>
       </div>
 
       {/* حالة التحميل */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 5 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
@@ -71,11 +71,12 @@ function ForYouSection() {
             loop={true}
             grabCursor={true}
             breakpoints={{
-              1400: { slidesPerView: 5 },
-              1200: { slidesPerView: 4 },
-              992: { slidesPerView: 3 },
-              768: { slidesPerView: 2 },
-              0: { slidesPerView: 1 },
+              1400: { slidesPerView: 5, spaceBetween: 20 },
+              1200: { slidesPerView: 4, spaceBetween: 20 },
+              992: { slidesPerView: 3, spaceBetween: 20 },
+              768: { slidesPerView: 3, spaceBetween: 15 },
+              480: { slidesPerView: 3, spaceBetween: 15 },
+              0: { slidesPerView: 2, spaceBetween: 10 },
             }}
             className="pb-2 mb-8 px-4 overflow-hidden"
           >

@@ -30,6 +30,9 @@ function App() {
     const dir = i18n.dir(i18n.language);
     document.documentElement.dir = dir;
     document.documentElement.lang = i18n.language;
+    
+    // تحديث عنوان الموقع ديناميكياً
+    document.title = i18n.language.startsWith('ar') ? 'سوقي | أحدث المنتجات' : 'Souqi | Latest Products';
   }, [i18n, i18n.language]);
 
   return (
@@ -39,7 +42,7 @@ function App() {
           <ScrollManager />
         <Navbar />
 
-        <main className="container mx-auto min-h-[70vh] px-4">
+        <main className="container mx-auto min-h-[70vh] px-1 md:px-4">
           <Routes>
             {/* المستخدم */}
             <Route path="/" element={<Home />} />

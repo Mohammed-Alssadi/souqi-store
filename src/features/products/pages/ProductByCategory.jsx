@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ReactPaginate from "react-paginate";
 import { useTranslation } from 'react-i18next';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function ProductByCategory() {
   const { slug } = useParams();
@@ -18,7 +19,7 @@ function ProductByCategory() {
 
   //  حاله المنتجات في الصفحه
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 1;
+  const itemsPerPage = 6;
 
 
   useEffect(() => {
@@ -55,26 +56,24 @@ function ProductByCategory() {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8  min-h-[50vh]:">
-        <h1 className="text-4xl font-bold mb-8 pt-4 text-start">
+      <div className="container mx-auto px-2 md:px-4 py-2 md:py-8 min-h-[50vh]">
+        <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-8 md:pt-4 text-start">
           {isAr ? currentCategory.name_ar : currentCategory.name_en}
         </h1>
 
         {loading ? (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6 mt-6">
+            {Array.from({ length: 8 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
           </div>
-        ) : null}
-
-        {filteredProducts.length === 0 ? (
+        ) : filteredProducts.length === 0 ? (
           <>
             <div className=" flex flex-col justify-center">
               <p className="text-center text-muted-foreground">{t('category.noProducts', 'No products found for')} {isAr ? currentCategory.name_ar : currentCategory.name_en}</p>
               <Link
                 to="/#categories"
-                className="text-center text-blue-600 hover:text-blue-800 my-8  font-medium"
+                className="text-center text-blue-600 hover:text-blue-800 my-4  font-medium"
               >
                 &larr; {t('category.backToCategories', 'Back To Categories')}
               </Link>
@@ -83,26 +82,28 @@ function ProductByCategory() {
         ) : (
           <>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
               {!loading && currentItems.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
-            <div className=" flex justify-center  mt-8 md:mt-12 md:pt-12">
-              <ReactPaginate
-                previousLabel={"<"}
-                nextLabel={">"}
-                pageCount={pageCount}
-                onPageChange={handlePageClick}
-                containerClassName={"flex space-x-2  md:space-x-2"}
-                pageClassName={"px-2 md:px-4 py-2 border border-border rounded hover:bg-primary hover:text-primary-foreground cursor-pointer"}
-                previousClassName={ " px-2 md:px-4 py-2 border border-border rounded hover:bg-primary hover:text-primary-foreground cursor-pointer"}
-                nextClassName={" px-2 md:px-4 py-2 border border-border rounded hover:bg-primary hover:text-primary-foreground cursor-pointer"}
-                activeClassName={" bg-primary text-primary-foreground border-primary"}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-              />
-            </div>
+            {pageCount > 1 && (
+              <div className=" flex justify-center  mt-8 md:mt-12 md:pt-4 pb-8">
+                <ReactPaginate
+                  previousLabel={isAr ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+                  nextLabel={isAr ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+                  pageCount={pageCount}
+                  onPageChange={handlePageClick}
+                  containerClassName={"flex items-center gap-1 md:gap-2"}
+                  pageClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer text-sm font-medium bg-card"}
+                  previousClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer bg-card"}
+                  nextClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer bg-card"}
+                  activeClassName={"!bg-primary text-primary-foreground !border-primary shadow-sm pointer-events-none"}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={2}
+                />
+              </div>
+            )}
           </>
 
 
