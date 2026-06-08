@@ -1,24 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css"; */
 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 330 81% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 330 81% 60%;
+    --radius: 0.5rem;
+  }
 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 47.4% 11.2%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 47.4% 11.2%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 330 81% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  /* Fix Chrome Autofill in Dark Mode */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active{
+      -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
+      -webkit-text-fill-color: hsl(var(--foreground)) !important;
+      transition: background-color 5000s ease-in-out 0s;
+  }
+}
     
-  
-body {
-  font-family: 'Inter', sans-serif;
-}
-h1, h2, h3 {
-  font-family: 'Montserrat', sans-serif;
-}
-
-
-*{
-   font-family: 'Montserrat', sans-serif; 
-}
-
 
 .custom-dot{
   background-color:#0a6ec09f;
@@ -73,67 +122,47 @@ h1, h2, h3 {
 }
 
 /* النقاط العامة */
-.custom-carousel .p-carousel-indicators .p-carousel-indicator {
-      /* لون النقاط العادية */
-  width: 12px;                      
-  height: 10px;
-  margin: 0 4px;                    
-  border-radius: 50%;               /* شكل دائري */
-  margin-top: 15px;                 
+.custom-carousel .p-carousel-indicators .p-carousel-indicator button {
+  background-color: #9ca3af !important;
+  width: 12px !important;                      
+  height: 12px !important;
+  border-radius: 50% !important;
   transition: all 0.3s ease;
 }
 
 /* النقطة النشطة */
-.custom-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight {
-  background-color: #ff4081;        /* لون النقطة النشطة */
+.custom-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+  background-color: hsl(var(--primary)) !important;
+  transform: scale(1.2);
 }
 
 /* النقاط على الهاتف */
 @media (max-width: 768px) {
-  .custom-carousel .p-carousel-indicators .p-carousel-indicator {
-    width: 10px;
-    height: 10px;
-    margin: 0 3px;
+  .custom-carousel .p-carousel-indicators .p-carousel-indicator button {
+    width: 10px !important;
+    height: 10px !important;
   }
-}
-
-
-
-/* ملف CSS الخاص بك */
-.custom-carousel .p-carousel-indicators .p-carousel-indicator {
-  background-color: #cdd7d8;       /* لون النقاط العادية */
-  width: 13px;                      /* حجم النقاط */
-  height: 10px;
-  margin: 0 4px;                    /* مسافة بين النقاط */
-  border-radius: 10%;
-  margin-top: 30px               /* شكل دائري */;                    /* شفافية */
-  transition: all 0.3s ease;
-}
-
-.custom-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight {
-  background-color: #ff4081;        /* لون النقطة النشطة */
-
 }
 
 
 
 
 .slider_container>.slick-slider>.slick-dots>li.slick-active button:before {
-    color: #007580 !important;
+    color: hsl(var(--primary)) !important;
 }
 /* تغيير لون النقاط */
 .slick-dots li button::before{
   margin-top: 35px!important;
 }
 .slick-dots li button:before {
-  color: #dfdddd98 !important; /* أحمر Tailwind (red-500) */
+  color: #9ca3af !important;
   opacity: 1 !important;
   font-size: 10px !important;
 }
 
 /* النقطة النشطة */
 .slick-dots li.slick-active button:before {
-  color: #8b8888 !important; /* أحمر أغمق (red-700) */
+  color: hsl(var(--primary)) !important;
 }
 /* تحسين شكل أزرار الـ Pagination من PrimeReact */
 .custom-dataview .p-paginator {

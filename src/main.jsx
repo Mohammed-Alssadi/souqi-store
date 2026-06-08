@@ -8,7 +8,8 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 import 'tw-elements';
 
-
+// استيراد إعدادات الترجمة
+import './i18n';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />

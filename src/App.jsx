@@ -1,49 +1,65 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import ProductDetails from './pages/ProductDetails'
-import CartPage from './pages/CartPage'
-import ProductByCategory from './pages/ProductByCategory'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer';
-import SearchResultsPage from './pages/SearchResultsPage';
-import { Provider } from 'react-redux'
-import { store } from './App/Store'
-import AllProducts from './pages/AllProducts'
-import ScrollManager from "./components/ScrollManager";
-import AllCategories from './pages/AllCategories'
-import NotFound from './pages/NotFound'
-import './index.css'
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { PrimeReactProvider } from "primereact/api";
+
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import ScrollManager from "./components/layout/ScrollManager";
+import { ThemeProvider } from "./components/ThemeProvider";
+
+// الصفحات العامة
+import Home from "./features/home/pages/Home";
+import AllProducts from "./features/products/pages/AllProducts";
+import ProductDetails from "./features/products/pages/ProductDetails";
+import ProductByCategory from "./features/products/pages/ProductByCategory";
+import SearchResultsPage from "./features/search/pages/SearchResultsPage";
+import AllCategories from "./features/categories/pages/AllCategories";
+import CartPage from "./features/cart/pages/CartPage";
+import NotFound from "./pages/NotFound";
+import LoginForm from "./features/auth/pages/LoginForm";
+import RegisterForm from "./features/auth/pages/RegisterForm";
+
+import "./index.css";
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // تحديد الاتجاه بناءً على اللغة (rtl للعربية، و ltr للغات الأخرى)
+    const dir = i18n.dir(i18n.language);
+    document.documentElement.dir = dir;
+    document.documentElement.lang = i18n.language;
+  }, [i18n, i18n.language]);
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ScrollManager /> 
-        
+    <ThemeProvider defaultTheme="light" storageKey="ecommerce-theme">
+      <PrimeReactProvider value={{ rtl: i18n.language.startsWith('ar') }}>
+        <BrowserRouter>
+          <ScrollManager />
         <Navbar />
-        <div className="container mx-auto min-h-[70vh]">
-        {/* <div className="h-[110px] md:h-[90px]"></div> */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/products" element={<AllProducts/>}/>
-          {/* <Route path="/cart" element={<CartPage />} /> */}
-          <Route path="/category/:slug" element={<ProductByCategory />} />
-          <Route path="/search" element={<SearchResultsPage />} />
-          <Route path="/categories" element={<AllCategories/>} />
-          <Route path="*" element={<NotFound />} />
-        
-        </Routes>
-          </div>
-        <Footer />
-      
-      </BrowserRouter>
-    </Provider>
-  )
 
+        <main className="container mx-auto min-h-[70vh] px-4">
+          <Routes>
+            {/* المستخدم */}
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<AllProducts />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/category/:slug" element={<ProductByCategory />} />
+            <Route path="/categories" element={<AllCategories />} />
+            <Route path="/search" element={<SearchResultsPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />            {/* صفحة غير موجودة */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+
+        <Footer />
+        </BrowserRouter>
+      </PrimeReactProvider>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
