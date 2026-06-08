@@ -187,7 +187,7 @@ function Navbar() {
                   placeholder={t('navbar.searchHere', 'Search here...')}
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="w-full h-11 bg-secondary/50 dark:bg-secondary/30 border border-transparent hover:bg-secondary/80 focus:bg-background dark:focus:bg-background focus:border-primary rounded-full ps-5 pe-12 focus:outline-none focus:ring-4 focus:ring-primary/20 text-foreground placeholder:text-muted-foreground transition-all duration-300"
+                  className="w-full h-11 bg-gray-100 dark:bg-secondary/30 border border-gray-200 dark:border-transparent hover:bg-gray-200 dark:hover:bg-secondary/50 focus:bg-white dark:focus:bg-background focus:border-primary rounded-full ps-5 pe-12 focus:outline-none focus:ring-4 focus:ring-primary/20 text-foreground placeholder:text-muted-foreground transition-all duration-300"
                 />
                 <button
                   type="submit"

@@ -57,6 +57,14 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
+  
+  * {
+    font-family: 'Cairo', 'Inter', sans-serif;
+  }
+  
+  .font-brand, .font-brand * {
+    font-family: 'Lalezar', cursive !important;
+  }
   /* Fix Chrome Autofill in Dark Mode */
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
