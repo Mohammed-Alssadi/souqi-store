@@ -1,0 +1,37 @@
+name: Deploy React App to Hostinger FTP
+
+on:
+  push:
+    branches:
+      - main
+      - master # يعمل سواء كان اسم البرانش main أو master
+
+jobs:
+  web-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+      
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: 📦 Install Dependencies
+        run: npm ci || npm install
+        
+      - name: 🏗️ Build Project
+        run: npm run build
+        
+      - name: 🚀 Sync Files to Hostinger FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./domains/voyexa.online/public_html/souqi/ # مسار السب دومين في الاستضافة
