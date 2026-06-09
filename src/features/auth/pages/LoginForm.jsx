@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogIn, AlertCircle, RefreshCw } from 'lucide-react';
 import { useLogin } from '../hooks/useLogin';
+import GoogleAuthButton from '../components/GoogleAuthButton';
 
 /**
  * 🎨 مكون تسجيل الدخول المرئي (LoginForm View Component)
@@ -32,6 +33,21 @@ function LoginForm() {
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{t('auth.welcomeBack')}</h2>
           <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">{t('auth.signInToAccount')}</p>
+        </div>
+
+        {/* زر جوجل */}
+        <GoogleAuthButton actionText={t('auth.signInWithGoogle', 'تسجيل الدخول باستخدام Google')} />
+
+        {/* فاصل تسجيل الدخول الاجتماعي */}
+        <div className="relative mt-6 mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border"></span>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              {t('auth.orContinueWith', 'أو المتابعة باستخدام')}
+            </span>
+          </div>
         </div>
 
         {/* عرض رسائل الخطأ والتنبيهات المخصصة */}

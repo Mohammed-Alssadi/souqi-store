@@ -59,6 +59,11 @@
     "signOutSuccess": "تم تسجيل الخروج بنجاح.",
     "signOutError": "فشل تسجيل الخروج. يرجى المحاولة لاحقاً.",
     "hello": "مرحباً، {{name}}",
+    "continueWithGoogle": "المتابعة باستخدام Google",
+    "signInWithGoogle": "تسجيل الدخول باستخدام Google",
+    "signUpWithGoogle": "إنشاء الحساب باستخدام Google",
+    "orContinueWith": "أو المتابعة باستخدام",
+    "googleLoginError": "حدث خطأ أثناء الاتصال بجوجل. يرجى المحاولة لاحقاً.",
     "errors": {
       "emailRequired": "البريد الإلكتروني مطلوب",
       "invalidEmail": "البريد الإلكتروني غير صالح",

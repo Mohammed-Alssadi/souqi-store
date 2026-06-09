@@ -25,6 +25,19 @@ export const useAuthStore = create((set) => ({
     return data;
   },
 
+  // 🌐 دالة تسجيل الدخول بواسطة Google
+  signInWithGoogle: async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // window.location.origin يتعرف تلقائياً على البيئة (لوكال أو برودكشن)
+        redirectTo: window.location.origin,
+      }
+    });
+    if (error) throw error;
+    return data;
+  },
+
   // 📝 دالة إنشاء حساب جديد (Sign Up)
   // ترسل بيانات المستخدم الجديد إلى Supabase
   signUp: async (email, password, firstName, lastName) => {

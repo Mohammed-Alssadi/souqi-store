@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserPlus, AlertCircle } from 'lucide-react';
 import { useRegister } from '../hooks/useRegister';
+import GoogleAuthButton from '../components/GoogleAuthButton';
 
 /**
  * 🎨 مكون إنشاء حساب جديد المرئي (RegisterForm View Component)
@@ -29,6 +30,21 @@ function RegisterForm() {
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{t('auth.createAccount')}</h2>
           <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">{t('auth.joinUs')}</p>
+        </div>
+
+        {/* زر جوجل */}
+        <GoogleAuthButton actionText={t('auth.signUpWithGoogle', 'إنشاء الحساب باستخدام Google')} />
+
+        {/* فاصل تسجيل الدخول الاجتماعي */}
+        <div className="relative mt-5 mb-5">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border"></span>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              {t('auth.orContinueWith', 'أو المتابعة باستخدام')}
+            </span>
+          </div>
         </div>
 
         {/* عرض رسائل أخطاء التسجيل */}

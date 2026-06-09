@@ -66,6 +66,11 @@
     "signOutSuccess": "Successfully signed out.",
     "signOutError": "Failed to sign out. Please try again.",
     "hello": "Hello, {{name}}",
+    "continueWithGoogle": "Continue with Google",
+    "signInWithGoogle": "Sign In with Google",
+    "signUpWithGoogle": "Sign Up with Google",
+    "orContinueWith": "OR CONTINUE WITH",
+    "googleLoginError": "Failed to connect to Google. Please try again.",
     "errors": {
       "emailRequired": "Email is required",
       "invalidEmail": "Invalid email address",
