@@ -2,7 +2,15 @@ import { create } from 'zustand';
 import products from './services/productsData';
 
 export const useProductStore = create((set) => ({
-  items: products,
+  items: [],
+  isLoading: true,
+  fetchProducts: async () => {
+    set({ isLoading: true });
+    // محاكاة جلب حقيقي من السيرفر لمدة 1.2 ثانية (يستبدل لاحقاً بربط Supabase)
+    setTimeout(() => {
+      set({ items: products, isLoading: false });
+    }, 1200);
+  },
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
   addProduct: (product) => set((state) => ({ items: [...state.items, product] })),

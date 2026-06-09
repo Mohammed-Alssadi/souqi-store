@@ -20,6 +20,9 @@ function CategoryCard({ category }) {
             <img
               src={category.image}
               alt={categoryName}
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
               className="mx-auto h-28 object-contain transition-transform duration-500 group-hover:scale-110"
             />
           </div>

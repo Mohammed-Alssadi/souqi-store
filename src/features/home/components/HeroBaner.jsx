@@ -13,41 +13,41 @@ function HeroBanner() {
   const [loading, setLoading] = useState(true);
   // 🔹 محاكاة تحميل الصور (تقدر تربطها بتحميل فعلي)
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
+    const timer = setTimeout(() => setLoading(false), 100);
     return () => clearTimeout(timer);
   }, []);
 
   const bannerImagesEn = [
-    { 
-      img: "/images/banner_tech.png", 
-      title: "Latest Technology", 
-      desc: "Discover the best electronics with unbeatable prices. Everything you need in one place.", 
-      btn: "Shop Tech", 
-      isDark: false 
+    {
+      img: "/images/banner_tech.png",
+      title: "Latest Technology",
+      desc: "Discover the best electronics with unbeatable prices. Everything you need in one place.",
+      btn: "Shop Tech",
+      isDark: false
     },
-    { 
-      img: "/images/banner_fashion.png", 
-      title: "Premium Lifestyle", 
-      desc: "Elevate your style with our exclusive fashion collection and luxury accessories.", 
-      btn: "Shop Fashion", 
-      isDark: false 
+    {
+      img: "/images/banner_fashion.png",
+      title: "Premium Lifestyle",
+      desc: "Elevate your style with our exclusive fashion collection and luxury accessories.",
+      btn: "Shop Fashion",
+      isDark: false
     }
   ];
 
   const bannerImagesAr = [
-    { 
-      img: "/images/banner_tech.png", 
-      title: "أحدث التقنيات", 
-      desc: "اكتشف أفضل الإلكترونيات بأسعار لا تقبل المنافسة. كل ما تحتاجه في مكان واحد.", 
-      btn: "تسوق التقنية", 
-      isDark: false 
+    {
+      img: "/images/banner_tech.png",
+      title: "أحدث التقنيات",
+      desc: "اكتشف أفضل الإلكترونيات بأسعار لا تقبل المنافسة. كل ما تحتاجه في مكان واحد.",
+      btn: "تسوق التقنية",
+      isDark: false
     },
-    { 
-      img: "/images/banner_fashion.png", 
-      title: "أسلوب حياة راقي", 
-      desc: "ارتقِ بأسلوبك مع تشكيلتنا الحصرية من الأزياء والكماليات الفاخرة.", 
-      btn: "تسوق الأزياء", 
-      isDark: false 
+    {
+      img: "/images/banner_fashion.png",
+      title: "أسلوب حياة راقي",
+      desc: "ارتقِ بأسلوبك مع تشكيلتنا الحصرية من الأزياء والكماليات الفاخرة.",
+      btn: "تسوق الأزياء",
+      isDark: false
     }
   ];
 
@@ -121,7 +121,8 @@ function HeroBanner() {
                   alt="offer1"
                   className="absolute inset-0 w-full h-full object-cover"
                   fetchpriority="high"
-                  decoding="async"
+                  loading="eager"
+                
                 />
               </div>
               <div className="flex-1 relative rounded-xl md:rounded-3xl overflow-hidden">
@@ -130,7 +131,8 @@ function HeroBanner() {
                   alt="offer2"
                   className="absolute inset-0 w-full h-full object-cover"
                   fetchpriority="high"
-                  decoding="async"
+                  loading="eager"
+         
                 />
               </div>
             </>

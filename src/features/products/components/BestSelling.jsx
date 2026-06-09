@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useProductStore } from "../store";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -17,23 +17,17 @@ function BestSelling() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
   const products = useProductStore((state) => state.items);
-  const [bestSelling, setBestSelling] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const loading = useProductStore((state) => state.isLoading);
 
-  // 🧠 فرز المنتجات حسب الأكثر مبيعاً
-  useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const sorted = [...products]
-        .sort((a, b) => b.sold - a.sold)
-        .slice(0, 10);
-      setBestSelling(sorted);
-
-      // ⏳ محاكاة التحميل
-      setLoading(true);
-      const timer = setTimeout(() => setLoading(false), 1000);
-      return () => clearTimeout(timer);
-    }
+  // 🧠 فرز المنتجات حسب الأكثر مبيعاً محلياً (Derived State)
+  const bestSelling = useMemo(() => {
+    if (!Array.isArray(products) || products.length === 0) return [];
+    return [...products]
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, 10);
   }, [products]);
+
+
 
   return (
     <div className="mt-1">

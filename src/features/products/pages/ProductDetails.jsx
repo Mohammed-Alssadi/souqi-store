@@ -5,12 +5,14 @@ import { useProductStore } from "../store";
 import { useCartStore } from "../../cart/store";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import PageLoader from "../../../components/common/PageLoader";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -19,6 +21,7 @@ function ProductDetails() {
   const product = useProductStore((state) =>
     state.items.find((p) => p.id === parseInt(id))
   );
+  const isLoading = useProductStore((state) => state.isLoading);
 
   const isAr = i18n.language.startsWith('ar');
   const localizedTitle = product ? (isAr ? product.title_ar : product.title_en) : '';
@@ -27,18 +30,26 @@ function ProductDetails() {
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const [images] = useState(
-    product
-      ? [
-        { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
-        { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
-        { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
-      ]
-      : []
-  );
+  const [images] = useState(() => {
+    if (!product) return [];
+    if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+      // 🚀 جاهز للإنتاج: إذا كان المنتج يحتوي على مصفوفة صور حقيقية (من Supabase لاحقاً)
+      return product.images.map(img => ({ itemImageSrc: img, thumbnailImageSrc: img, alt: localizedTitle }));
+    }
+    // 🚧 الحل المؤقت (Fallback) إذا لم تتوفر مصفوفة الصور
+    return [
+      { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
+      { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
+      { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
+    ];
+  });
 
 
-    if (!product) {
+    if (isLoading && !product) {
+      return <PageLoader />;
+    }
+
+    if (!isLoading && !product) {
       return (
         <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-semibold mb-4 text-destructive">
@@ -201,7 +212,10 @@ function ProductDetails() {
           {/* زر الإضافة للسلة */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 w-full mt-4">
             <Button
-              onClick={() => addToCart(product)}
+              onClick={() => {
+                addToCart(product);
+                toast.success(t('cart.addedSuccess', 'Added to cart successfully!'));
+              }}
               className="flex-1 flex items-center justify-center gap-2 rounded-xl px-6 py-6 font-semibold shadow-lg"
             >
               <ShoppingCart size={22} />
@@ -209,7 +223,10 @@ function ProductDetails() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => addToCart(product)}
+              onClick={() => {
+                addToCart(product);
+                toast.success(t('cart.addedSuccess', 'Added to cart successfully!'));
+              }}
               className="flex-1 flex items-center justify-center gap-2 rounded-xl border-primary text-primary hover:bg-primary/10 px-7 py-6 font-semibold"
             >
               <CreditCard size={22} />

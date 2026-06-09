@@ -24,7 +24,7 @@ export default function usePagination(data = [], itemsPerPage = 10) {
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
     // الصعود لأعلى الصفحة لرؤية المنتجات الجديدة
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 80, behavior: 'smooth' });
   };
 
   return {

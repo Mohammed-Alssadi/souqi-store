@@ -12,6 +12,7 @@ import usePagination from '../../../hooks/usePagination';
 // Components
 import ProductGrid from '../components/ProductGrid';
 import Pagination from '../../../components/common/Pagination';
+import PageLoader from '../../../components/common/PageLoader';
 
 /**
  * صفحة عرض المنتجات حسب التصنيف (Products by Category Page)
@@ -23,10 +24,11 @@ export default function ProductByCategory() {
   const isAr = i18n.language.startsWith('ar');
   
   const categories = useCategoryStore((state) => state.items);
+  const isCategoryLoading = useCategoryStore((state) => state.isLoading);
   const products = useProductStore((state) => state.items);
   
-  // حالة التحميل (لإظهار Skeletons)
-  const [loading, setLoading] = useState(true);
+  // حالة التحميل الحقيقية من المتجر
+  const loading = useProductStore((state) => state.isLoading);
 
   // البحث عن التصنيف الحالي بناءً على الرابط
   const currentCategory = useMemo(() => {
@@ -48,17 +50,18 @@ export default function ProductByCategory() {
     currentPage,
   } = usePagination(filteredProducts, 8); // هنا نعرض 8 منتجات في كل صفحة
 
-  // محاكاة تأخير التحميل عند تغيير التصنيف
+  // إعادة الصفحة الأولى عند تغيير التصنيف بشكل فوري بدون تأخير
   useEffect(() => {
-    setLoading(true);
-    setCurrentPage(0); // إعادة الصفحة الأولى عند تبديل التصنيف
-    
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    setCurrentPage(0); 
   }, [slug, setCurrentPage]);
 
-  // إذا لم يتم العثور على التصنيف
-  if (!currentCategory) {
+  // عرض شاشة تحميل إذا كانت التصنيفات قيد التحميل ولم يتم العثور على التصنيف بعد
+  if (isCategoryLoading && !currentCategory) {
+    return <PageLoader />;
+  }
+
+  // إذا لم يتم العثور على التصنيف بعد انتهاء التحميل
+  if (!isCategoryLoading && !currentCategory) {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
         <h1 className="text-2xl font-bold text-destructive mb-4">404!</h1>

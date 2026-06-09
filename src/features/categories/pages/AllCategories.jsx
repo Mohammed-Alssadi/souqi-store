@@ -9,18 +9,10 @@ import { Button } from '@/components/ui/button';
 function AllCategories() {
     const { t } = useTranslation();
     const categories = useCategoryStore((state) => state.items);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        setLoading(true)
-        const taimer = setTimeout(() => {
-            setLoading(false)
-        }, 1000);
-        return () => clearTimeout(taimer);
-    }, []);
+    const loading = useCategoryStore((state) => state.isLoading);
 
 
-    if (categories.length === 0) {
+    if (!loading && categories.length === 0) {
         return (
             <div className="container mx-auto px-4 py-24 flex flex-col items-center justify-center text-center">
                 <h1 className="text-4xl font-bold text-destructive mb-4">404</h1>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useProductStore } from '../store';
 import ProductCard from './ProductCard';
 import ProductCardSkeleton from './ProductCardSkeleton';
@@ -15,29 +15,22 @@ function DiscountedProducts() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
   const products = useProductStore((state) => state.items);
-  const [loading, setLoading] = useState(true);
-  const [discounted, setDiscounted] = useState([]);
+  const loading = useProductStore((state) => state.isLoading);
 
-  // ⚙️ إعداد البيانات (فرز المنتجات المخفَّضة)
-  useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const filtered = [...products]
-        .filter(p => p.oldPrice && p.oldPrice > p.price)
-        .sort((a, b) => {
-          const pctA = ((a.oldPrice - a.price) / a.oldPrice) * 100;
-          const pctB = ((b.oldPrice - b.price) / b.oldPrice) * 100;
-          return pctB - pctA;
-        })
-        .slice(0, 9);
-
-      setDiscounted(filtered);
-
-      // 🕒 محاكاة تحميل 4 ثوانٍ
-      setLoading(true);
-      const timer = setTimeout(() => setLoading(false), 1000);
-      return () => clearTimeout(timer);
-    }
+  // ⚙️ إعداد البيانات (فرز المنتجات المخفَّضة) محلياً بدون useEffect (Derived State)
+  const discounted = useMemo(() => {
+    if (!Array.isArray(products) || products.length === 0) return [];
+    return [...products]
+      .filter(p => p.oldPrice && p.oldPrice > p.price)
+      .sort((a, b) => {
+        const pctA = ((a.oldPrice - a.price) / a.oldPrice) * 100;
+        const pctB = ((b.oldPrice - b.price) / b.oldPrice) * 100;
+        return pctB - pctA;
+      })
+      .slice(0, 9);
   }, [products]);
+
+
 
   return (
     <div className="pt-0 mt-0 m overflow-hidden">

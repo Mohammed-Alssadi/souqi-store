@@ -6,6 +6,7 @@ import DiscountBadge from "../../../components/common/DiscountBadge";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 function ProductCard({ product }) {
   const { t, i18n } = useTranslation();
@@ -67,7 +68,11 @@ function ProductCard({ product }) {
           <Button 
             variant="outline"
             size="icon"
-            onClick={(e) => { e.preventDefault(); addToCart(product); }}
+            onClick={(e) => { 
+              e.preventDefault(); 
+              addToCart(product);
+              toast.success(t('cart.addedSuccess', 'Added to cart successfully!'));
+            }}
             className="flex-1 h-10 text-primary border-border hover:bg-accent hover:text-accent-foreground px-0 rounded-lg"
           >
             <ShoppingCart className="w-5 h-5" />

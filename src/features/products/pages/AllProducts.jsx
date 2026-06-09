@@ -24,6 +24,7 @@ export default function AllProducts() {
   const { t, i18n } = useTranslation();
   
   const products = useProductStore((state) => state.items);
+  const isStoreLoading = useProductStore((state) => state.isLoading);
   const categories = useCategoryStore((state) => state.items);
 
   // 1. التحكم في حالة ظهور قائمة الفلتر الجانبية
@@ -33,12 +34,14 @@ export default function AllProducts() {
   const {
     filters,
     setFilters,
-    loading,
+    loading: filterLoading,
     maxPrice,
     handleApplyFilters,
     handleResetFilters,
     filteredProducts,
   } = useProductFilters(products);
+
+  const isPageLoading = isStoreLoading || filterLoading;
 
   // 3. إدارة التصفح (Pagination) باستخدام الخطاف المخصص
   const {
@@ -93,7 +96,7 @@ export default function AllProducts() {
       />
 
       {/* 🟢 رسالة عدم وجود منتجات */}
-      {filteredProducts.length === 0 && !loading && (
+      {filteredProducts.length === 0 && !isPageLoading && (
         <div className="flex justify-center items-center py-10">
           <p className="text-muted-foreground text-lg">{t('products.noProductsFound', 'No products found')}</p>
         </div>
@@ -102,7 +105,7 @@ export default function AllProducts() {
       {/* 🟢 شبكة المنتجات (تتكفل بعرض Skeletons أثناء التحميل تلقائياً) */}
       <ProductGrid 
         items={currentItems} 
-        loading={loading} 
+        loading={isPageLoading} 
         skeletonCount={10} 
         gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
       />

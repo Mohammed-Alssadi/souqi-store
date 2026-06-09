@@ -31,8 +31,8 @@ function RegisterForm() {
   } = useRegister();
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-0 md:p-4 bg-background">
-      <div className="max-w-md sm:max-w-lg w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 sm:px-8 py-8 md:p-10 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
+    <div className="min-h-[calc(100dvh-80px)] flex items-center justify-center p-0 md:p-4 bg-background">
+      <div className="max-w-md sm:max-w-lg w-full bg-card min-h-[calc(100dvh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 sm:px-8 py-8 md:p-10 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
         {/* ترويسة الصفحة */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">

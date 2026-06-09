@@ -16,13 +16,7 @@ function TopCategories() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
   const categories = useCategoryStore((state) => state.items).slice(0, 7);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const loading = useCategoryStore((state) => state.isLoading);
 
   return (
     <>

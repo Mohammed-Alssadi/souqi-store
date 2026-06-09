@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useProductStore } from '../store';
 import ProductCard from './ProductCard';
 import ProductCardSkeleton from './ProductCardSkeleton';
@@ -15,21 +15,15 @@ function ForYouSection() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
   const products = useProductStore((state) => state.items);
-  const [forYou, setForYou] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const loading = useProductStore((state) => state.isLoading);
 
-  useEffect(() => {
-    if (Array.isArray(products) && products.length > 0) {
-      const shuffled = [...products].sort(() => Math.random() - 0.5);
-      setForYou(shuffled.slice(0, 10));
-
-      setLoading(true);
-      const timer = setTimeout(() => setLoading(false), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setLoading(false);
-    }
+  // 🧠 خلط المنتجات عشوائياً محلياً (Derived State)
+  const forYou = useMemo(() => {
+    if (!Array.isArray(products) || products.length === 0) return [];
+    return [...products].sort(() => Math.random() - 0.5).slice(0, 10);
   }, [products]);
+
+
 
   return (
     <div className="mt-2">

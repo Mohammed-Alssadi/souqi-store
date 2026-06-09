@@ -19,7 +19,6 @@ export const useCartStore = create(
             return { items: [...state.items, { ...product, quantity: 1 }] };
           }
         });
-        toast.success("تم الإضافة للسلة بنجاح");
       },
       removeFromCart: (id) => set((state) => ({
         items: state.items.filter((item) => item.id !== id)
