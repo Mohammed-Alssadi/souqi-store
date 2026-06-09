@@ -27,13 +27,14 @@ export const useAuthStore = create((set) => ({
 
   // 📝 دالة إنشاء حساب جديد (Sign Up)
   // ترسل بيانات المستخدم الجديد إلى Supabase
-  signUp: async (email, password, fullName) => {
+  signUp: async (email, password, firstName, lastName) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          full_name: fullName, // تخزين الاسم الكامل كبيانات إضافية للمستخدم (Metadata)
+          first_name: firstName, 
+          last_name: lastName,
         }
       }
     });

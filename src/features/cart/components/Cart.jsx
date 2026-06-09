@@ -23,17 +23,17 @@ function Cart({ visible, setvisible }) {
     <Sheet open={visible} onOpenChange={setvisible} className="dark:bg-black">
       <SheetContent
         side="end"
-        className="bg-background  text-foreground pt-5 px-4 w-[430px] sm:max-w-md overflow-y-auto"
+        className="bg-background text-foreground pt-5 px-4 w-[85vw] sm:w-[430px] sm:max-w-md flex flex-col"
       >
-        <div dir={isAr ? "rtl" : "ltr"} className="h-full relative pb-32">
+        <div dir={isAr ? "rtl" : "ltr"} className="flex flex-col h-full overflow-hidden">
           {/* 🧾 الهيدر */}
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-2 shrink-0">
             <h2 className="text-3xl font-bold text-primary flex items-center gap-2 mx-4">
               <ShoppingBag size={40} className="text-primary text-4xl" /> {t('cart.myCart', 'My Cart')}
               <span className="text-muted-foreground mx-5 text-2xl"> [ {cartItems.length} ]</span>
             </h2>
           </div>
-          <div className="mb-4 pt-2">
+          <div className="mb-4 pt-2 shrink-0">
             <Divider className="bg-border" />
           </div>
 
@@ -58,7 +58,7 @@ function Cart({ visible, setvisible }) {
           ) : (
             <>
               {/* 🧺 المنتجات */}
-              <div className="max-h-[60vh] overflow-y-auto pe-2 space-y-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/50">
+              <div className="flex-1 overflow-y-auto pe-2 space-y-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/50 pb-4">
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
@@ -110,12 +110,12 @@ function Cart({ visible, setvisible }) {
               </div>
 
               {/* 💳 ملخص الطلب */}
-              <div className="bg-card shadow-[0_-4px_10px_rgba(0,0,0,0.05)] border-t border-border rounded-xl mx-auto mt-5 absolute bottom-0 mb-7 end-1 start-2 w-[95%]">
+              <div className="bg-card shadow-[0_-4px_10px_rgba(0,0,0,0.05)] border-t border-border rounded-xl mt-auto shrink-0 pb-6 pt-2">
                 <div className="flex justify-around font-semibold text-lg pt-3 px-5 mx-4 text-foreground">
                   <span>{t('cart.total', 'Total')}</span>
                   <span className="text-primary">${total.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-center gap-4 items-center px-4 my-4 mb-5">
+                <div className="flex justify-center gap-4 items-center px-4 my-4 mb-2">
                   <button 
                     onClick={() => setvisible(false)}
                     className="flex items-center gap-1 text-primary md:py-3 md:px-4 border border-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition text-sm py-2 px-2"

@@ -1,63 +1,28 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { UserPlus, AlertCircle } from 'lucide-react';
+import { useRegister } from '../hooks/useRegister';
 
-// 🛡️ استخدام Zod لتعريف مخطط التحقق من صحة البيانات لنموذج التسجيل
-// يتم التحقق من الاسم، البريد، طول كلمة المرور، وتطابق كلمتي المرور
-const registerSchema = z.object({
-  fullName: z.string().min(3, 'fullNameMin'),
-  email: z.string().min(1, 'emailRequired').email('invalidEmail'),
-  password: z.string().min(6, 'passwordMin'),
-  confirmPassword: z.string().min(1, 'confirmPasswordRequired'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "passwordsDontMatch",
-  path: ["confirmPassword"],
-});
-
+/**
+ * 🎨 مكون إنشاء حساب جديد المرئي (RegisterForm View Component)
+ * يقتصر فقط على تقديم واجهة المستخدم وربط الحقول بالخطاف المستقل.
+ */
 function RegisterForm() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  // 🔌 جلب دالة إنشاء الحساب من Zustand
-  const signUp = useAuthStore((state) => state.signUp);
-  // حالة لعرض الأخطاء (مثل الإيميل مسجل مسبقاً)
-  const [authError, setAuthError] = useState('');
-  // حالة لعرض رسالة النجاح بعد التسجيل
-  const [successMsg, setSuccessMsg] = useState('');
-
-  // 📝 إعداد React Hook Form مع ربطه بـ Zod للتحقق المباشر
+  // 🧠 استهلاك خطاف التسجيل المستقل للحصول على الحالات والدوال
   const {
-    register, // لربط الحقول
-    handleSubmit, // لمعالجة الإرسال
-    formState: { errors, isSubmitting }, // الحصول على الأخطاء وحالة التحميل
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-  });
-
-  // 🚀 دالة تُنفذ عند إرسال النموذج بنجاح (بعد اجتياز جميع شروط Zod)
-  const onSubmit = async (data) => {
-    setAuthError('');
-    setSuccessMsg('');
-    try {
-      // 🔐 محاولة إنشاء الحساب في Supabase
-      await signUp(data.email, data.password, data.fullName);
-      // ✅ عرض رسالة نجاح للمستخدم
-      setSuccessMsg('Account created successfully! You can now sign in.');
-      // ⏳ الانتظار ثانيتين ثم توجيه المستخدم لصفحة تسجيل الدخول
-      setTimeout(() => navigate('/login'), 2000);
-    } catch (err) {
-      // ❌ في حال حدوث خطأ من خادم Supabase، نعرض رسالة الخطأ
-      setAuthError(err.message || 'Failed to create account. Please try again.');
-    }
-  };
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    authError,
+    onSubmit,
+    t,
+  } = useRegister();
 
   return (
     <div className="min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background md:py-12 md:px-4">
       <div className="max-w-md w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
+        {/* ترويسة الصفحة */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">
             <UserPlus size={24} className="sm:w-8 sm:h-8" />
@@ -66,6 +31,7 @@ function RegisterForm() {
           <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">{t('auth.joinUs')}</p>
         </div>
 
+        {/* عرض رسائل أخطاء التسجيل */}
         {authError && (
           <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-500/10 border-l-4 border-red-500 rounded-r-md flex items-start gap-3 text-red-500">
             <AlertCircle size={20} className="shrink-0 mt-0.5" />
@@ -73,26 +39,37 @@ function RegisterForm() {
           </div>
         )}
 
-        {successMsg && (
-          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-500/10 border-l-4 border-green-500 rounded-r-md flex items-start gap-3 text-green-600">
-            <p className="text-xs sm:text-sm font-medium">{successMsg}</p>
-          </div>
-        )}
-
+        {/* نموذج الإدخال */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.fullName')}</label>
-            <input
-              type="text"
-              {...register('fullName')}
-              className={`w-full px-4 py-3 rounded-xl border bg-transparent text-foreground ${
-                errors.fullName ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-input focus:border-primary focus:ring-primary/20'
-              } outline-none transition-all focus:ring-4`}
-              placeholder="John Doe"
-            />
-            {errors.fullName && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.fullName.message}`)}</p>}
+          {/* حقول الاسم الأول واسم العائلة في سطر واحد */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.firstName', 'الاسم الأول')}</label>
+              <input
+                type="text"
+                {...register('firstName')}
+                className={`w-full px-4 py-3 rounded-xl border bg-transparent text-foreground ${
+                  errors.firstName ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-input focus:border-primary focus:ring-primary/20'
+                } outline-none transition-all focus:ring-4`}
+                placeholder={t('auth.firstNamePlaceholder', 'أحمد')}
+              />
+              {errors.firstName && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.firstNameMin`, 'الاسم الأول مطلوب')}</p>}
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.lastName', 'اسم العائلة')}</label>
+              <input
+                type="text"
+                {...register('lastName')}
+                className={`w-full px-4 py-3 rounded-xl border bg-transparent text-foreground ${
+                  errors.lastName ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-input focus:border-primary focus:ring-primary/20'
+                } outline-none transition-all focus:ring-4`}
+                placeholder={t('auth.lastNamePlaceholder', 'محمد')}
+              />
+              {errors.lastName && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.lastNameMin`, 'اسم العائلة مطلوب')}</p>}
+            </div>
           </div>
 
+          {/* حقل البريد الإلكتروني */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.emailAddress')}</label>
             <input
@@ -106,6 +83,7 @@ function RegisterForm() {
             {errors.email && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.email.message}`)}</p>}
           </div>
 
+          {/* حقل كلمة المرور */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.password')}</label>
             <input
@@ -119,6 +97,7 @@ function RegisterForm() {
             {errors.password && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.password.message}`)}</p>}
           </div>
 
+          {/* حقل تأكيد كلمة المرور */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-1">{t('auth.confirmPassword')}</label>
             <input
@@ -132,6 +111,7 @@ function RegisterForm() {
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.confirmPassword.message}`)}</p>}
           </div>
 
+          {/* زر التقديم */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -141,6 +121,7 @@ function RegisterForm() {
           </button>
         </form>
 
+        {/* الانتقال لتسجيل الدخول */}
         <p className="text-center mt-5 sm:mt-6 text-sm sm:text-base text-muted-foreground">
           {t('auth.alreadyHaveAccount')}{' '}
           <Link to="/login" className="font-bold text-primary hover:text-primary/80 transition-colors">

@@ -7,9 +7,13 @@ export default function ScrollManager() {
   useEffect(() => {
     if (hash) {
       // لو الرابط فيه #، انزل للمقطع المحدد
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+      try {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (error) {
+        // تجاهل الخطأ إذا كان الـ hash غير صالح كـ CSS Selector (مثل توكنات Supabase)
       }
     } else {
       // لو مافيش #، ارجع لأعلى الصفحة

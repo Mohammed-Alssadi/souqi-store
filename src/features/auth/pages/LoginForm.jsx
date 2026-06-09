@@ -1,51 +1,31 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../store';
-import { LogIn, AlertCircle } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { LogIn, AlertCircle, RefreshCw } from 'lucide-react';
+import { useLogin } from '../hooks/useLogin';
 
-// 🛡️ استخدام Zod لتعريف مخطط التحقق من صحة البيانات (Validation Schema)
-const loginSchema = z.object({
-  email: z.string().min(1, 'emailRequired').email('invalidEmail'),
-  password: z.string().min(6, 'passwordMin'),
-});
-
+/**
+ * 🎨 مكون تسجيل الدخول المرئي (LoginForm View Component)
+ * يقتصر فقط على تقديم واجهة المستخدم وربط الحقول بالخطاف المستقل.
+ */
 function LoginForm() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  // 🔌 جلب دالة تسجيل الدخول من Zustand (والتي تتصل بدورها بـ Supabase)
-  const signIn = useAuthStore((state) => state.signIn);
-  const [authError, setAuthError] = useState('');
-
-  // 📝 تهيئة React Hook Form مع Zod Resolver لربط التحقق بالنموذج
+  // 🧠 استهلاك خطاف تسجيل الدخول المستقل للحصول على الحالات والدوال
   const {
-    register, // تُستخدم لربط حقول الإدخال (Inputs) بالنموذج
-    handleSubmit, // دالة للتعامل مع الإرسال (Submit) بعد التحقق من صحة البيانات
-    formState: { errors, isSubmitting }, // جلب الأخطاء وحالة الإرسال (لمنع الإرسال المتكرر)
-  } = useForm({
-    resolver: zodResolver(loginSchema),
-  });
-
-  // 🚀 دالة تُنفذ عند إرسال النموذج بنجاح (بعد اجتياز جميع شروط Zod)
-  const onSubmit = async (data) => {
-    setAuthError(''); // تصفير الأخطاء السابقة
-    try {
-      // 🔐 محاولة تسجيل الدخول عبر Supabase باستخدام البريد وكلمة المرور
-      await signIn(data.email, data.password);
-      // ↪️ التوجيه للصفحة الرئيسية بعد نجاح التسجيل
-      navigate('/');
-    } catch (err) {
-      // ❌ في حال فشل تسجيل الدخول (مثلاً: كلمة مرور خاطئة)، نعرض رسالة خطأ
-      setAuthError(err.message || 'Failed to sign in. Please check your credentials.');
-    }
-  };
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    authError,
+    unconfirmedEmail,
+    resending,
+    onSubmit,
+    handleResendLink,
+    t,
+  } = useLogin();
 
   return (
     <div className="min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background md:py-12 md:px-4">
       <div className="max-w-md w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
+        {/* ترويسة الصفحة */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">
             <LogIn size={24} className="sm:w-8 sm:h-8" />
@@ -54,14 +34,32 @@ function LoginForm() {
           <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">{t('auth.signInToAccount')}</p>
         </div>
 
+        {/* عرض رسائل الخطأ والتنبيهات المخصصة */}
         {authError && (
-          <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-r-md flex items-start gap-3 text-red-500">
-            <AlertCircle size={20} className="shrink-0 mt-0.5" />
-            <p className="text-sm font-medium">{authError}</p>
+          <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-r-md flex flex-col gap-2 text-red-500">
+            <div className="flex items-start gap-3">
+              <AlertCircle size={20} className="shrink-0 mt-0.5" />
+              <p className="text-sm font-medium">{authError}</p>
+            </div>
+            
+            {/* زر إعادة إرسال الرابط في حال عدم التفعيل */}
+            {unconfirmedEmail && (
+              <button
+                type="button"
+                onClick={handleResendLink}
+                disabled={resending}
+                className="mt-2 text-xs font-bold text-primary hover:underline flex items-center gap-1.5 self-start disabled:opacity-50"
+              >
+                {resending && <RefreshCw size={12} className="animate-spin" />}
+                {t('auth.resendEmail', 'Resend Activation Link')}
+              </button>
+            )}
           </div>
         )}
 
+        {/* نموذج الإدخال */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
+          {/* حقل البريد الإلكتروني */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-2">{t('auth.emailAddress')}</label>
             <input
@@ -75,6 +73,7 @@ function LoginForm() {
             {errors.email && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.email.message}`)}</p>}
           </div>
 
+          {/* حقل كلمة المرور */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-2">{t('auth.password')}</label>
             <input
@@ -88,6 +87,7 @@ function LoginForm() {
             {errors.password && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.password.message}`)}</p>}
           </div>
 
+          {/* خيارات إضافية */}
           <div className="flex flex-row items-center justify-between pt-1 gap-2">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" className="w-4 h-4 rounded text-primary focus:ring-primary border-input bg-background" />
@@ -98,6 +98,7 @@ function LoginForm() {
             </Link>
           </div>
 
+          {/* زر التقديم */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -107,6 +108,7 @@ function LoginForm() {
           </button>
         </form>
 
+        {/* الانتقال لإنشاء حساب */}
         <p className="text-center mt-6 sm:mt-8 text-sm sm:text-base text-muted-foreground">
           {t('auth.dontHaveAccount')}{' '}
           <Link to="/register" className="font-bold text-primary hover:text-primary/80 transition-colors">

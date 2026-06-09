@@ -44,10 +44,12 @@ function SlidbarFilter({
     <Sheet open={visible} onOpenChange={setVisible}>
       <SheetContent
         side="end"
-        className="w-[430px] p-6 overflow-y-auto sm:max-w-md rounded-s-2xl shadow-xl bg-background dark:bg-card text-foreground"
+        className="w-[85vw] sm:w-[430px] p-6 sm:max-w-md rounded-s-2xl shadow-xl bg-background dark:bg-card text-foreground flex flex-col"
       >
-        <div dir={isAr ? "rtl" : "ltr"} className="h-full">
-          <h2 className="text-3xl font-semibold text-foreground mb-8">{t('filter.title', 'Filter')}</h2>
+        <div dir={isAr ? "rtl" : "ltr"} className="flex flex-col h-full overflow-hidden">
+          <h2 className="text-3xl font-semibold text-foreground mb-8 shrink-0">{t('filter.title', 'Filter')}</h2>
+
+          <div className="flex-1 overflow-y-auto pe-2 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/50">
 
       {/* تقييم العملاء */}
       <div className="mb-8">
@@ -145,8 +147,10 @@ function SlidbarFilter({
         </select>
       </div>
 
+      </div>
+
       {/* أزرار التنفيذ */}
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between gap-4 mt-auto shrink-0 pt-6 pb-2 border-t border-border">
         <button
           onClick={onApply}
           className="flex-1 bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition"

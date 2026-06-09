@@ -36,11 +36,11 @@ function ProductDetails() {
   ];
 
   const itemTemplate = (item) => (
-    <div className=" rounded-2xl p bg-card border border-border">
+    <div className="rounded-2xl p bg-card border border-border flex justify-center items-center overflow-hidden">
       <img
         src={item.itemImageSrc}
         alt={item.alt}
-        className=" h-[400px] object-contain transition-transform duration-1000 ease-in-out transform hover:scale-150 cursor-zoom-in"
+        className="h-[250px] md:h-[400px] w-full object-contain transition-transform duration-1000 ease-in-out transform hover:scale-150 cursor-zoom-in"
       />
     </div>
   );
@@ -72,18 +72,18 @@ function ProductDetails() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-5 min-h-[80vh]">
+    <div className="container mx-auto px-2 md:px-6 py-3 md:py-5 min-h-[80vh]">
       <Link
         to="/#products"
-        className="text-primary hover:text-primary/80 inline-block font-medium mb-6"
+        className="text-primary hover:text-primary/80 inline-block font-medium mb-4 md:mb-6 px-2"
       >
-        &larr; {t('product.backToProducts', 'Back To Products')}
+        <span className={isAr ? "rotate-180 inline-block" : "inline-block"}>&larr;</span> {t('product.backToProducts', 'Back To Products')}
       </Link>
 
       {/* الشبكة الرئيسية */}
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-[-2rem] lg:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
         {/* العمود الأول: الصور */}
-        <div className="flex flex-col items-center  rounded px-5  pb-0  lg:pb-12 overflow-hidden border-b">
+        <div dir="ltr" className="flex flex-col items-center rounded px-2 md:px-5 pb-0 lg:pb-12 overflow-hidden border-b md:border-b-0">
           <Galleria
             value={images}
             responsiveOptions={responsiveOptions}
@@ -98,9 +98,9 @@ function ProductDetails() {
         </div>
 
         {/* العمود الثاني: التفاصيل */}
-        <div className="flex flex-col justify-center items-start text-start md:justify-around mt-4 md:mt-3 md:pt-3">
-          <div>
-            <h1 className=" lg:text-3xl text-xl md:text-4xl font-bold text-foreground mb-4">
+        <div className="flex flex-col justify-center items-start text-start md:justify-around mt-4 md:mt-0 px-2">
+          <div className="w-full">
+            <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4">
               {localizedTitle}
             </h1>
 

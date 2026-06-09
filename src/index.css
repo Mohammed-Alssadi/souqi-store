@@ -56,6 +56,9 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    margin: 0;
+    padding: 0;
+
   }
   
   * {
