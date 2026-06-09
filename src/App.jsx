@@ -140,7 +140,7 @@ function App() {
           <Footer />
         </>
 
-        <Toaster position="bottom-right" richColors />
+        <Toaster position={i18n.language.startsWith('ar') ? 'top-left' : 'top-right'} richColors />
       </BrowserRouter>
     </ThemeProvider>
   );

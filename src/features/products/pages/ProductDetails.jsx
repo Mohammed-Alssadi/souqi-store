@@ -1,5 +1,5 @@
 import { BugPlay, CreditCard, ShoppingCart, Star } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProductStore } from "../store";
 import { useCartStore } from "../../cart/store";
@@ -30,7 +30,7 @@ function ProductDetails() {
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  const [images] = useState(() => {
+  const images = useMemo(() => {
     if (!product) return [];
     if (product.images && Array.isArray(product.images) && product.images.length > 0) {
       // 🚀 جاهز للإنتاج: إذا كان المنتج يحتوي على مصفوفة صور حقيقية (من Supabase لاحقاً)
@@ -42,7 +42,7 @@ function ProductDetails() {
       { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
       { itemImageSrc: product.image, thumbnailImageSrc: product.image, alt: localizedTitle },
     ];
-  });
+  }, [product, localizedTitle]);
 
 
     if (isLoading && !product) {
@@ -65,8 +65,8 @@ function ProductDetails() {
     }
 
   return (
-    <div className="container mx-auto px-2 md:px-6 py-3 md:py-5 min-h-[80vh]">
-      <Button variant="link" className="text-primary hover:text-primary/80 font-medium mb-4 md:mb-6 px-0" asChild>
+    <div className="container mx-auto px-2 md:px-6 py-4 md:py-5 min-h-[80vh]">
+      <Button variant="link" className="text-primary hover:text-primary/80 font-medium mb-2 md:mb-6 px-0" asChild>
         <Link to="/#products" className="flex items-center gap-1">
           <span className={isAr ? "rotate-180 inline-block" : "inline-block"}>&larr;</span> {t('product.backToProducts', 'Back To Products')}
         </Link>
@@ -81,11 +81,21 @@ function ProductDetails() {
             navigation={true}
             thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
             modules={[FreeMode, Navigation, Thumbs]}
-            className="w-full h-[300px] md:h-[400px] rounded-2xl bg-card border border-border flex justify-center items-center mb-4"
+            className="w-full h-[300px] md:h-[400px] rounded-2xl bg-card flex justify-center items-center mb-4 [&_.swiper-button-next]:!hidden [&_.swiper-button-prev]:!hidden md:[&_.swiper-button-next]:!flex md:[&_.swiper-button-prev]:!flex"
+            style={{
+              "--swiper-navigation-size": "20px",
+            }}
           >
             {images.map((item, idx) => (
               <SwiperSlide key={idx} className="flex justify-center items-center p-4 bg-white dark:bg-white rounded-xl">
-                <img src={item.itemImageSrc} alt={item.alt} className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-110" loading="lazy" decoding="async" />
+                <img 
+                  src={item.itemImageSrc} 
+                  alt={item.alt} 
+                  className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-110" 
+                  loading={idx === 0 ? "eager" : "lazy"} 
+                  fetchpriority={idx === 0 ? "high" : "auto"}
+                  decoding={idx === 0 ? "sync" : "async"}
+                />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -102,7 +112,8 @@ function ProductDetails() {
             >
               {images.map((item, idx) => (
                 <SwiperSlide key={idx} className="cursor-pointer overflow-hidden rounded-xl border border-transparent opacity-50 hover:opacity-100 transition-opacity bg-white dark:bg-white [&.swiper-slide-thumb-active]:border-primary [&.swiper-slide-thumb-active]:opacity-100">
-                  <img src={item.thumbnailImageSrc} alt={item.alt} className="w-full h-full object-contain p-2" loading="lazy" decoding="async" />
+                  <img src={item.thumbnailImageSrc} alt={item.alt} className="w-full h-full object-contain p-2" 
+                   loading="lazy" decoding="async" />
                 </SwiperSlide>
               ))}
             </Swiper>
