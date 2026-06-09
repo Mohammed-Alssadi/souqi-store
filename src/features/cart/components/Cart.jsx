@@ -1,10 +1,10 @@
 import React from 'react';
 import { ShoppingBag, Minus, Plus, Trash2 } from 'lucide-react';
-import { Sheet, SheetContent } from "../../../components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useCartStore } from "../store";
-import Divider from '@mui/material/Divider';
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 function Cart({ visible, setvisible }) {
   const { t, i18n } = useTranslation();
@@ -34,7 +34,7 @@ function Cart({ visible, setvisible }) {
             </h2>
           </div>
           <div className="mb-4 pt-2 shrink-0">
-            <Divider className="bg-border" />
+            <hr className="border-border" />
           </div>
 
           {/* 🛍️ محتوى السلة */}
@@ -47,18 +47,21 @@ function Cart({ visible, setvisible }) {
               <p className="text-muted-foreground mb-6">
                 {t('cart.emptyDesc', 'Add some products to your cart to see them here.')}
               </p>
-              <Link
-                to="/"
+              <Button
+                asChild
                 onClick={() => { setvisible(false) }}
-                className="bg-primary text-primary-foreground px-6 py-3 rounded-full hover:bg-primary/90 transition shadow-md"
+                size="lg"
+                className="rounded-full shadow-md"
               >
-                {t('cart.continueShopping', 'Continue Shopping')}
-              </Link>
+                <Link to="/">
+                  {t('cart.continueShopping', 'Continue Shopping')}
+                </Link>
+              </Button>
             </div>
           ) : (
             <>
               {/* 🧺 المنتجات */}
-              <div className="flex-1 overflow-y-auto pe-2 space-y-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/50 pb-4">
+              <div className="flex-1 flex flex-col overflow-y-auto pe-2 gap-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-secondary/50 pb-4">
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
@@ -79,31 +82,37 @@ function Cart({ visible, setvisible }) {
                         ${item.price.toFixed(2)}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
-                        <button
+                        <Button
+                          variant="secondary"
+                          size="icon"
                           onClick={() => decreaseQty(item.id)}
-                          className="bg-primary/10 text-primary hover:bg-primary/20 p-1 rounded-full transition"
+                          className="h-6 w-6 rounded-full"
                         >
                           <Minus size={14} />
-                        </button>
+                        </Button>
                         <span className="font-medium text-foreground">{item.quantity}</span>
-                        <button
+                        <Button
+                          variant="secondary"
+                          size="icon"
                           onClick={() => increaseQty(item.id)}
-                          className="bg-primary/10 text-primary hover:bg-primary/20 p-1 rounded-full transition"
+                          className="h-6 w-6 rounded-full"
                         >
                           <Plus size={14} />
-                        </button>
+                        </Button>
                       </div>
                     </div>
                     <div className="text-end">
                       <p className="font-semibold text-foreground text-xs md:text-lg">
                         ${(item.price * item.quantity).toFixed(2)}
                       </p>
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={() => removeFromCart(item.id)}
-                        className="text-destructive hover:text-red-600 mt-2"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10 mt-2 h-8 w-8"
                       >
                         <Trash2 size={18} />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -116,20 +125,22 @@ function Cart({ visible, setvisible }) {
                   <span className="text-primary">${total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-center gap-4 items-center px-4 my-4 mb-2">
-                  <button 
+                  <Button 
+                    variant="outline"
                     onClick={() => setvisible(false)}
-                    className="flex items-center gap-1 text-primary md:py-3 md:px-4 border border-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition text-sm py-2 px-2"
+                    className="flex-1 font-semibold"
                   >
                     <span className={isAr ? "rotate-180" : ""}>&larr;</span> {t('cart.continueShoppingBtn', 'Continue Shopping')}
-                  </button>
-                  <Link
-                    to="/"
+                  </Button>
+                  <Button
+                    asChild
                     onClick={() => setvisible(false)}
+                    className="flex-1 font-semibold shadow-md"
                   >
-                    <button className="md:px-5 bg-primary text-primary-foreground md:py-3 rounded-lg font-semibold hover:bg-primary/90 transition text-sm py-2 px-2 shadow-md">
+                    <Link to="/">
                       {t('cart.checkout', 'Checkout')}
-                    </button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </>

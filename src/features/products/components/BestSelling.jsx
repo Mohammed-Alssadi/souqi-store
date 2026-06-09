@@ -79,12 +79,12 @@ function BestSelling() {
               loop={true} // يجعل السلايدر دائري
               grabCursor={true} // يجعل المؤشر بشكل اليد عند السحب
               breakpoints={{
-                1400: { slidesPerView: 5, spaceBetween: 20 },
-                1200: { slidesPerView: 4, spaceBetween: 20 },
-                992: { slidesPerView: 3, spaceBetween: 20 },
-                768: { slidesPerView: 3, spaceBetween: 15 },
-                480: { slidesPerView: 3, spaceBetween: 15 },
-                0: { slidesPerView: 2, spaceBetween: 10 },
+                1280: { slidesPerView: 5, spaceBetween: 20 },
+                1024: { slidesPerView: 4, spaceBetween: 20 },
+                768: { slidesPerView: 3.5, spaceBetween: 20 },
+                640: { slidesPerView: 2.5, spaceBetween: 15 },
+                480: { slidesPerView: 2, spaceBetween: 15 },
+                0: { slidesPerView: 1, spaceBetween: 0 },
               }}
               className="pb-2 mb-8 p overflow-hidden"
             >

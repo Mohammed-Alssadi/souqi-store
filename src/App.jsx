@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PrimeReactProvider } from "primereact/api";
 
 import Navbar from "./components/layout/navbar/Navbar";
 import Footer from "./components/layout/Footer";
@@ -9,18 +8,20 @@ import ScrollManager from "./components/layout/ScrollManager";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { Toaster } from "./components/ui/sonner";
 
-// الصفحات العامة
-import Home from "./features/home/pages/Home";
-import AllProducts from "./features/products/pages/AllProducts";
-import ProductDetails from "./features/products/pages/ProductDetails";
-import ProductByCategory from "./features/products/pages/ProductByCategory";
-import SearchResultsPage from "./features/search/pages/SearchResultsPage";
-import AllCategories from "./features/categories/pages/AllCategories";
-import CartPage from "./features/cart/pages/CartPage";
-import NotFound from "./pages/NotFound";
-import LoginForm from "./features/auth/pages/LoginForm";
-import RegisterForm from "./features/auth/pages/RegisterForm";
-import VerifyEmail from "./features/auth/pages/VerifyEmail"; // المكون الجديد للتحقق من البريد
+import PageLoader from "./components/common/PageLoader";
+
+// تحميل الصفحات ديناميكياً (Lazy Loading) لتحسين الأداء
+const Home = lazy(() => import("./features/home/pages/Home"));
+const AllProducts = lazy(() => import("./features/products/pages/AllProducts"));
+const ProductDetails = lazy(() => import("./features/products/pages/ProductDetails"));
+const ProductByCategory = lazy(() => import("./features/products/pages/ProductByCategory"));
+const SearchResultsPage = lazy(() => import("./features/search/pages/SearchResultsPage"));
+const AllCategories = lazy(() => import("./features/categories/pages/AllCategories"));
+const CartPage = lazy(() => import("./features/cart/pages/CartPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const LoginForm = lazy(() => import("./features/auth/pages/LoginForm"));
+const RegisterForm = lazy(() => import("./features/auth/pages/RegisterForm"));
+const VerifyEmail = lazy(() => import("./features/auth/pages/VerifyEmail"));
 
 import { supabase } from "./lib/supabase";
 import { useAuthStore } from "./features/auth/store";
@@ -70,33 +71,33 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="ecommerce-theme">
-      <PrimeReactProvider value={{ rtl: i18n.language.startsWith('ar') }}>
-        <BrowserRouter>
-          <ScrollManager />
+      <BrowserRouter>
+        <ScrollManager />
         <Navbar />
 
         <main className="container mx-auto min-h-[70vh] px-1 md:px-4">
-          <Routes>
-            {/* المستخدم */}
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<AllProducts />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/category/:slug" element={<ProductByCategory />} />
-            <Route path="/categories" element={<AllCategories />} />
-            <Route path="/search" element={<SearchResultsPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            {/* صفحة غير موجودة */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* المستخدم */}
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<AllProducts />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/category/:slug" element={<ProductByCategory />} />
+              <Route path="/categories" element={<AllCategories />} />
+              <Route path="/search" element={<SearchResultsPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              {/* صفحة غير موجودة */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </main>
 
         <Footer />
         <Toaster position="bottom-right" richColors />
-        </BrowserRouter>
-      </PrimeReactProvider>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

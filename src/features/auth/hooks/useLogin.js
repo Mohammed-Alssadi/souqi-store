@@ -33,13 +33,19 @@ export function useLogin() {
   }, [user, navigate]);
 
   // 📝 تهيئة مكتبة React Hook Form مع ربطها بمخطط التحقق Zod
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(loginSchema),
-  });
+  } = form;
 
   // 🚀 تنفيذ تسجيل الدخول عند إرسال النموذج بنجاح
   const onSubmit = async (data) => {
@@ -93,6 +99,7 @@ export function useLogin() {
   };
 
   return {
+    form,
     register,
     handleSubmit,
     errors,

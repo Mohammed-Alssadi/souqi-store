@@ -23,7 +23,8 @@ export default function usePagination(data = [], itemsPerPage = 10) {
   // عند تغيير الصفحة من خلال مكون ReactPaginate
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
-    // يمكن إضافة window.scrollTo({ top: 0, behavior: 'smooth' }) هنا إذا أردنا الصعود لأعلى
+    // الصعود لأعلى الصفحة لرؤية المنتجات الجديدة
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return {

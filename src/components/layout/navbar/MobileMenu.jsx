@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Menu, Search, Globe, User } from "lucide-react";
+import { Menu, Globe, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import { useAuthStore } from "../../../features/auth/store";
-import { ThemeToggle } from "../../ui/ThemeToggle";
+import { ThemeToggle } from "../../common/ThemeToggle";
+import { LangSwitch } from "../../common/LangSwitch";
 import Logo from "./Logo";
 import {
   Sheet,
@@ -20,11 +22,6 @@ export default function MobileMenu({ onOpenSearch }) {
   const { user } = useAuthStore();
   const [open, setOpen] = useState(false);
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    setOpen(false);
-  };
-
   const openSearch = () => {
     setOpen(false);
     onOpenSearch();
@@ -33,9 +30,9 @@ export default function MobileMenu({ onOpenSearch }) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="lg:hidden text-foreground hover:text-primary transition-colors p-1">
-          <Menu size={26} />
-        </button>
+        <Button variant="ghost" size="icon" className="lg:hidden rounded-full hover:bg-transparent w-10 h-10">
+          <Menu size={30} strokeWidth={1.75} />
+        </Button>
       </SheetTrigger>
       
       {/* Side of the drawer dynamically changes based on RTL/LTR in sheet.jsx, default is 'end' (start or end) */}
@@ -48,36 +45,12 @@ export default function MobileMenu({ onOpenSearch }) {
           </SheetTitle>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        <div className="flex-1 overflow-y-auto flex flex-col py-2">
           
-          {/* إعدادات المظهر واللغة والبحث للموبايل */}
-          <div className="grid grid-cols-3 gap-2 pb-4 mb-2 border-b border-border">
-            {/* بطاقة البحث */}
-            <button
-              onClick={openSearch}
-              className="flex flex-col items-center justify-center gap-1 bg-secondary/20 dark:bg-secondary/10 border border-border/40 rounded-2xl p-2 shadow-sm hover:bg-secondary/40 transition-all"
-            >
-              <Search size={20} className="text-foreground" />
-              <span className="text-xs font-bold text-foreground">{t('navbar.search', 'Search')}</span>
-            </button>
 
-            {/* بطاقة المظهر */}
-            <div className="flex flex-col items-center justify-center gap-1 bg-secondary/20 dark:bg-secondary/10 border border-border/40 rounded-2xl p-2 shadow-sm">
-              <ThemeToggle />
-              <span className="text-xs font-bold text-foreground">{i18n.language.startsWith('ar') ? 'المظهر' : 'Theme'}</span>
-            </div>
 
-            {/* بطاقة اللغة */}
-            <button
-              onClick={() => changeLanguage(i18n.language.startsWith('ar') ? 'en' : 'ar')}
-              className="flex flex-col items-center justify-center gap-1 bg-primary/10 border border-primary/20 rounded-2xl p-2 shadow-sm hover:bg-primary/20 transition-all group"
-            >
-              <Globe size={20} className="text-primary group-hover:rotate-12 transition-transform" />
-              <span className="text-xs font-bold text-primary">{i18n.language.startsWith('ar') ? 'English' : 'عربي'}</span>
-            </button>
-          </div>
-
-          <div className="flex flex-col space-y-1">
+          {/* الروابط الأساسية */}
+          <div className="flex flex-col px-3 gap-1">
             {[
               { name: t('navbar.home'), path: "" },
               { name: t('navbar.categories'), path: "categories" },
@@ -86,26 +59,42 @@ export default function MobileMenu({ onOpenSearch }) {
               <Link
                 key={item.name}
                 to={`/${item.path}`}
-                className="py-3 px-2 text-foreground font-medium rounded-lg hover:bg-secondary/50 transition-colors"
+                className="py-3.5 px-4 text-foreground font-medium rounded-xl hover:bg-secondary/60 active:bg-secondary transition-colors"
                 onClick={() => setOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
           </div>
+
+          {/* التفضيلات */}
+          <div className="px-5 py-4 mt-auto">
+             <div className="h-[1px] bg-border w-full mb-5"></div>
+             <p className="text-[11px] font-bold text-muted-foreground mb-4 uppercase tracking-wider">
+               {i18n.language.startsWith('ar') ? 'التفضيلات' : 'Preferences'}
+             </p>
+             <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{i18n.language.startsWith('ar') ? 'المظهر' : 'Theme'}</span>
+                  <ThemeToggle />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{i18n.language.startsWith('ar') ? 'اللغة' : 'Language'}</span>
+                  <LangSwitch />
+                </div>
+             </div>
+          </div>
         </div>
 
         {/* روابط تسجيل الدخول للموبايل (اذا لم يسجل دخول فقط) */}
         {!user && (
           <div className="p-4 border-t border-border mt-auto">
-            <Link
-              to="/login"
-              className="w-full py-3 text-white bg-primary rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-md"
-              onClick={() => setOpen(false)}
-            >
-              <User size={18} />
-              {t('navbar.login')}
-            </Link>
+            <Button asChild className="w-full h-12 rounded-xl font-bold shadow-md text-base">
+              <Link to="/login" onClick={() => setOpen(false)}>
+                <User size={18} className="me-2" />
+                {t('navbar.login')}
+              </Link>
+            </Button>
           </div>
         )}
       </SheetContent>

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 import { useCartStore } from "../../../features/cart/store";
 import { useAuthStore } from "../../../features/auth/store";
 import Cart from "../../../features/cart/components/Cart";
-import { ThemeToggle } from "../../ui/ThemeToggle";
+import { ThemeToggle } from "../../common/ThemeToggle";
+import { LangSwitch } from "../../common/LangSwitch";
 
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
@@ -49,20 +52,28 @@ export default function Navbar() {
           <SearchBar />
 
           {/* الأيقونات اليمين */}
-          <div className="flex items-center gap-4 sm:gap-5 md:gap-6 ms-1 md:ms-2">
+          <div className="flex items-center gap-1.5 sm:gap-5 md:gap-6 ms-1 md:ms-2">
             
+            {/* أيقونة البحث للموبايل */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileSearchOpen(true)}
+              className="md:hidden rounded-full hover:bg-transparent px-0 mx-0 hover:text-primary w-10 h-10"
+            >
+              <Search size={26} />
+            </Button>
+
             {/* أيقونة السلة */}
-            <div className="relative p-1">
-              <ShoppingCart
-                onClick={() => setCartOpen(true)}
-                size={26}
-                className="text-foreground hover:text-primary cursor-pointer transition-colors"
-              />
+            <div className="relative flex items-center">
+              <Button variant="ghost" size="icon" onClick={() => setCartOpen(true)} className="rounded-full hover:bg-transparent hover:text-primary w-10 h-10">
+                <ShoppingCart size={26} />
+              </Button>
               <Cart visible={cartOpen} setvisible={setCartOpen} />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -end-1.5 bg-primary text-primary-foreground text-[11px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm">
+                <Badge className="absolute top-0 end-0 -translate-y-1/4 translate-x-1/4 rtl:-translate-x-1/4 px-1.5 min-w-[20px] h-[20px] flex items-center justify-center border-2 border-background shadow-sm text-[10px] rounded-full pointer-events-none">
                   {itemCount}
-                </span>
+                </Badge>
               )}
             </div>
 
@@ -72,13 +83,7 @@ export default function Navbar() {
             </div>
 
             {/* مغير اللغة للديسكتوب */}
-            <button
-              onClick={() => i18n.changeLanguage(i18n.language.startsWith('ar') ? 'en' : 'ar')}
-              className="hidden lg:flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-full hover:bg-primary/20 transition-colors font-bold text-sm"
-            >
-              <GlobeIcon />
-              {i18n.language.startsWith('ar') ? 'EN' : 'AR'}
-            </button>
+            <LangSwitch className="hidden lg:flex" />
 
             {/* قائمة المستخدم والأفاتار */}
             {user && <UserMenu />}
@@ -100,22 +105,3 @@ export default function Navbar() {
   );
 }
 
-function GlobeIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-      <path d="M2 12h20" />
-    </svg>
-  );
-}

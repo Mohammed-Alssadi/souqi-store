@@ -2,8 +2,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ReactPaginate from 'react-paginate';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 
 // استيراد الهوك المخصص للبحث
 import { useSearch } from '../hooks/useSearch';
@@ -33,6 +42,57 @@ const SearchResultsPage = () => {
     handlePageClick,
   } = useSearch(ITEMS_PER_PAGE);
 
+  // دالة لتوليد أزرار الترقيم بشكل احترافي مع دعم النقاط (...)
+  const renderPaginationItems = () => {
+    const items = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(pageCount - 1, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+    }
+
+    if (startPage > 0) {
+      items.push(
+        <PaginationItem key="first">
+          <PaginationLink href="#" onClick={(e) => { e.preventDefault(); handlePageClick({ selected: 0 }); }}>1</PaginationLink>
+        </PaginationItem>
+      );
+      if (startPage > 1) {
+        items.push(<PaginationItem key="ellipsis-start"><PaginationEllipsis /></PaginationItem>);
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink 
+            href="#" 
+            isActive={currentPage === i}
+            onClick={(e) => { e.preventDefault(); handlePageClick({ selected: i }); }}
+          >
+            {i + 1}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    if (endPage < pageCount - 1) {
+      if (endPage < pageCount - 2) {
+        items.push(<PaginationItem key="ellipsis-end"><PaginationEllipsis /></PaginationItem>);
+      }
+      items.push(
+        <PaginationItem key="last">
+          <PaginationLink href="#" onClick={(e) => { e.preventDefault(); handlePageClick({ selected: pageCount - 1 }); }}>{pageCount}</PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
+
   // ===================== [1] حالة: لا يوجد مصطلح بحث =====================
   if (!normalizedSearchTerm && !isLoading) {
     return (
@@ -52,12 +112,12 @@ const SearchResultsPage = () => {
           <p className="text-center text-muted-foreground text-xl mb-4">
             {t('search.noResults', 'No results found for')} <span className="font-bold text-foreground">"{rawQuery}"</span>
           </p>
-          <Link
-            to="/"
-            className="text-center text-primary hover:text-primary/80 font-medium"
-          >
-            &larr; {t('search.backToHome', 'Back To Home')}
-          </Link>
+          <Button variant="link" className="text-center font-medium px-0" asChild>
+            <Link to="/">
+              {isAr ? <ChevronRight className="w-4 h-4 mr-2" /> : <ChevronLeft className="w-4 h-4 mr-2" />}
+              {t('search.backToHome', 'Back To Home')}
+            </Link>
+          </Button>
         </div>
       </div>
     );
@@ -67,12 +127,12 @@ const SearchResultsPage = () => {
   return (
     <div className="container mx-auto px-4 py-8 min-h-[70vh]">
       {/* زر العودة للصفحة الرئيسية */}
-      <Link
-        to="/"
-        className="text-primary hover:text-primary/80 mb-8 inline-block font-medium text-lg transition-colors"
-      >
-        &larr; {t('search.backToHome', 'Back To Home')}
-      </Link>
+      <Button variant="link" className="mb-8 font-medium text-lg px-0" asChild>
+        <Link to="/">
+          {isAr ? <ChevronRight className="w-4 h-4 rtl:ml-2 ltr:mr-2" /> : <ChevronLeft className="w-4 h-4 rtl:ml-2 ltr:mr-2" />}
+          {t('search.backToHome', 'Back To Home')}
+        </Link>
+      </Button>
 
       {/* قسم عرض التصنيفات (إن وُجدت) */}
       {resultCategories.length > 0 && (
@@ -80,7 +140,7 @@ const SearchResultsPage = () => {
           <h2 className="text-xl md:text-3xl font-bold mb-4 md:mb-6">
             {t('search.categories', 'Categories')}
           </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {isLoading
               ? Array.from({ length: Math.min(6, resultCategories.length || 6) }).map((_, i) => (
                   <CategoryCardSkeleton key={`cat-skel-${i}`} />
@@ -98,7 +158,7 @@ const SearchResultsPage = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
             {t('search.products', 'Products')}
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
             {isLoading
               ? Array.from({ length: Math.min(ITEMS_PER_PAGE, resultProducts.length || ITEMS_PER_PAGE) }).map((_, i) => (
                   <ProductCardSkeleton key={`prod-skel-${i}`} />
@@ -112,20 +172,36 @@ const SearchResultsPage = () => {
 
           {/* ترقيم الصفحات (Pagination) للمنتجات - يظهر فقط إذا كانت المنتجات تتجاوز صفحة واحدة */}
           {pageCount > 1 && !isLoading && (
-            <div className="flex justify-center mt-12 pb-8 w-full">
-              <ReactPaginate
-                previousLabel={isAr ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-                nextLabel={isAr ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
-                pageCount={pageCount}
-                onPageChange={handlePageClick}
-                containerClassName={"flex items-center gap-1 md:gap-2"}
-                pageClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer text-sm font-medium bg-card"}
-                previousClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer bg-card"}
-                nextClassName={"w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-border rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer bg-card"}
-                activeClassName={"!bg-primary text-primary-foreground !border-primary shadow-sm pointer-events-none"}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={2}
-              />
+            <div className="flex justify-center mt-12 pb-8 w-full" dir="ltr">
+              <Pagination>
+                <PaginationContent className={cn("gap-1 md:gap-2", isAr ? "flex-row-reverse" : "flex-row")}>
+                  <PaginationItem>
+                    <PaginationLink 
+                      href="#" 
+                      onClick={(e) => { e.preventDefault(); if (currentPage > 0) handlePageClick({ selected: currentPage - 1 }); }}
+                      className={cn("gap-1 px-2.5", currentPage === 0 ? "pointer-events-none opacity-50" : "")}
+                      aria-label="Go to previous page"
+                    >
+                      {isAr ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+                      <span className="hidden sm:inline-block">{t('pagination.previous', 'Previous')}</span>
+                    </PaginationLink>
+                  </PaginationItem>
+                  
+                  {renderPaginationItems()}
+                  
+                  <PaginationItem>
+                    <PaginationLink 
+                      href="#" 
+                      onClick={(e) => { e.preventDefault(); if (currentPage < pageCount - 1) handlePageClick({ selected: currentPage + 1 }); }}
+                      className={cn("gap-1 px-2.5", currentPage === pageCount - 1 ? "pointer-events-none opacity-50" : "")}
+                      aria-label="Go to next page"
+                    >
+                      <span className="hidden sm:inline-block">{t('pagination.next', 'Next')}</span>
+                      {isAr ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </div>

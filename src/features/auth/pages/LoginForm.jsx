@@ -4,6 +4,19 @@ import { LogIn, AlertCircle, RefreshCw } from 'lucide-react';
 import { useLogin } from '../hooks/useLogin';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
 /**
  * 🎨 مكون تسجيل الدخول المرئي (LoginForm View Component)
  * يقتصر فقط على تقديم واجهة المستخدم وربط الحقول بالخطاف المستقل.
@@ -11,9 +24,7 @@ import GoogleAuthButton from '../components/GoogleAuthButton';
 function LoginForm() {
   // 🧠 استهلاك خطاف تسجيل الدخول المستقل للحصول على الحالات والدوال
   const {
-    register,
-    handleSubmit,
-    errors,
+    form,
     isSubmitting,
     authError,
     unconfirmedEmail,
@@ -24,8 +35,8 @@ function LoginForm() {
   } = useLogin();
 
   return (
-    <div className="min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background md:py-12 md:px-4">
-      <div className="max-w-md w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-0 md:p-4 bg-background">
+      <div className="max-w-md sm:max-w-lg w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 sm:px-8 py-8 md:p-10 border-0 md:border-2 md:border-border/50 flex flex-col justify-center">
         {/* ترويسة الصفحة */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary mb-3 sm:mb-4">
@@ -52,77 +63,88 @@ function LoginForm() {
 
         {/* عرض رسائل الخطأ والتنبيهات المخصصة */}
         {authError && (
-          <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-r-md flex flex-col gap-2 text-red-500">
+          <Alert variant="destructive" className="mb-6 flex flex-col gap-2">
             <div className="flex items-start gap-3">
-              <AlertCircle size={20} className="shrink-0 mt-0.5" />
-              <p className="text-sm font-medium">{authError}</p>
+              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <AlertDescription className="text-sm font-medium">{authError}</AlertDescription>
             </div>
-            
+
             {/* زر إعادة إرسال الرابط في حال عدم التفعيل */}
             {unconfirmedEmail && (
-              <button
+              <Button
+                variant="link"
                 type="button"
                 onClick={handleResendLink}
                 disabled={resending}
-                className="mt-2 text-xs font-bold text-primary hover:underline flex items-center gap-1.5 self-start disabled:opacity-50"
+                className="mt-1 h-auto p-0 text-xs font-bold self-start"
               >
-                {resending && <RefreshCw size={12} className="animate-spin" />}
+                {resending && <RefreshCw size={12} className="animate-spin mr-1.5" />}
                 {t('auth.resendEmail', 'Resend Activation Link')}
-              </button>
+              </Button>
             )}
-          </div>
+          </Alert>
         )}
 
         {/* نموذج الإدخال */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
-          {/* حقل البريد الإلكتروني */}
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">{t('auth.emailAddress')}</label>
-            <input
-              type="email"
-              {...register('email')}
-              className={`w-full px-4 py-3 rounded-xl border bg-transparent text-foreground ${
-                errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-input focus:border-primary focus:ring-primary/20'
-              } outline-none transition-all focus:ring-4`}
-              placeholder="you@example.com"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 sm:gap-6">
+            {/* حقل البريد الإلكتروني */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('auth.emailAddress')}</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="you@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage>{form.formState.errors.email?.message ? t(`auth.errors.${form.formState.errors.email.message}`) : ""}</FormMessage>
+                </FormItem>
+              )}
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.email.message}`)}</p>}
-          </div>
 
-          {/* حقل كلمة المرور */}
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">{t('auth.password')}</label>
-            <input
-              type="password"
-              {...register('password')}
-              className={`w-full px-4 py-3 rounded-xl border bg-transparent text-foreground ${
-                errors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-input focus:border-primary focus:ring-primary/20'
-              } outline-none transition-all focus:ring-4`}
-              placeholder="••••••••"
+            {/* حقل كلمة المرور */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('auth.password')}</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage>{form.formState.errors.password?.message ? t(`auth.errors.${form.formState.errors.password.message}`) : ""}</FormMessage>
+                </FormItem>
+              )}
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1 font-medium">{t(`auth.errors.${errors.password.message}`)}</p>}
-          </div>
 
-          {/* خيارات إضافية */}
-          <div className="flex flex-row items-center justify-between pt-1 gap-2">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded text-primary focus:ring-primary border-input bg-background" />
-              <span className="text-sm text-muted-foreground whitespace-nowrap">{t('auth.rememberMe')}</span>
-            </label>
-            <Link to="#" className="text-sm font-medium text-primary hover:text-primary/80 whitespace-nowrap">
-              {t('auth.forgotPassword')}
-            </Link>
-          </div>
+            {/* خيارات إضافية */}
+            <div className="flex flex-row items-center justify-between pt-1 gap-2">
+              <div className="flex items-center gap-2 cursor-pointer">
+                <Checkbox id="remember-me" />
+                <label
+                  htmlFor="remember-me"
+                  className="text-sm text-muted-foreground whitespace-nowrap leading-none cursor-pointer"
+                >
+                  {t('auth.rememberMe')}
+                </label>
+              </div>
+              <Button variant="link" className="text-sm font-medium px-0" asChild>
+                <Link to="#">{t('auth.forgotPassword')}</Link>
+              </Button>
+            </div>
 
-          {/* زر التقديم */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg mt-4"
-          >
-            {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
-          </button>
-        </form>
+            {/* زر التقديم */}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg mt-4"
+            >
+              {isSubmitting && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
+              {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
+            </Button>
+          </form>
+        </Form>
 
         {/* الانتقال لإنشاء حساب */}
         <p className="text-center mt-6 sm:mt-8 text-sm sm:text-base text-muted-foreground">

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function SearchBar() {
   const { t } = useTranslation();
@@ -22,19 +24,21 @@ export default function SearchBar() {
   return (
     <div className="hidden lg:block flex-1 max-w-md mx-6">
       <form onSubmit={handleSearch} className="relative">
-        <input
+        <Input
           type="text"
           placeholder={t('navbar.searchHere', 'Search here...')}
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
-          className="w-full h-11 bg-gray-100 dark:bg-secondary/30 border border-gray-200 dark:border-transparent hover:bg-gray-200 dark:hover:bg-secondary/50 focus:bg-white dark:focus:bg-background focus:border-primary rounded-full ps-5 pe-12 focus:outline-none focus:ring-4 focus:ring-primary/20 text-foreground placeholder:text-muted-foreground transition-all duration-300"
+          className="w-full h-11 bg-secondary hover:bg-secondary/80 rounded-full ps-5 pe-12 transition-colors border-transparent focus-visible:ring-primary focus-visible:ring-offset-0"
         />
-        <button
+        <Button
           type="submit"
-          className="absolute end-1.5 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+          variant="ghost"
+          size="icon"
+          className="absolute end-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
         >
           <Search size={18} />
-        </button>
+        </Button>
       </form>
     </div>
   );

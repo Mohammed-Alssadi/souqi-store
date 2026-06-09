@@ -248,3 +248,16 @@
     display: none;
   }
 }
+
+/* === Swiper Pagination === */
+.swiper-pagination-bullet {
+  background-color: hsl(var(--foreground)) !important;
+  opacity: 0.3 !important;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: hsl(var(--primary)) !important;
+  opacity: 1 !important;
+  transform: scale(1.2);
+}

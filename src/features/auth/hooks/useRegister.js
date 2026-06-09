@@ -30,13 +30,22 @@ export function useRegister() {
   }, [user, navigate]);
 
   // 📝 تهيئة React Hook Form للتحقق من الحقول باستخدام Zod schema
+  const form = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-  });
+  } = form;
 
   // 🚀 تنفيذ إنشاء الحساب عند الضغط على زر التسجيل بنجاح
   const onSubmit = async (data) => {
@@ -63,6 +72,7 @@ export function useRegister() {
   };
 
   return {
+    form,
     register,
     handleSubmit,
     errors,

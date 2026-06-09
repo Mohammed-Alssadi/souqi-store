@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MailOpen, ArrowRight, ArrowLeft, RefreshCw } from 'lucide-react';
 import { useVerifyEmail } from '../hooks/useVerifyEmail';
+import { Button } from "@/components/ui/button";
 
 /**
  * 🎨 مكون تفعيل البريد المرئي (VerifyEmail View Component)
@@ -19,7 +20,7 @@ function VerifyEmail() {
 
   return (
     <div className="min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-120px)] flex items-center justify-center bg-background md:py-12 md:px-4">
-      <div className="max-w-md w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center items-center text-center">
+      <div className="max-w-md md:max-w-lg w-full bg-card min-h-[calc(100vh-80px)] md:min-h-0 rounded-none md:rounded-3xl md:shadow-xl px-5 py-8 md:p-8 border-0 md:border-2 md:border-border/50 flex flex-col justify-center items-center text-center">
         {/* أيقونة تفاعلية مميزة */}
         <div className="relative mb-6">
           <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
@@ -39,14 +40,14 @@ function VerifyEmail() {
         </p>
 
         {/* زر إعادة الإرسال */}
-        <button
+        <Button
           onClick={handleResend}
           disabled={resending}
-          className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl hover:bg-primary/90 transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg mb-4"
+          className="w-full font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg mb-4 h-auto"
         >
           {resending ? (
             <>
-              <RefreshCw className="animate-spin" size={18} />
+              <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
               {t('auth.resending', 'Resending...')}
             </>
           ) : (
@@ -54,16 +55,15 @@ function VerifyEmail() {
               {t('auth.resendEmail', 'Resend Email')}
             </>
           )}
-        </button>
+        </Button>
 
         {/* رابط الرجوع لتسجيل الدخول */}
-        <Link
-          to="/login"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors mt-2"
-        >
-          {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
-          {t('auth.backToLogin', 'Back to Login')}
-        </Link>
+        <Button variant="link" className="mt-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors" asChild>
+          <Link to="/login" className="inline-flex items-center gap-2">
+            {isRTL ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
+            {t('auth.backToLogin', 'Back to Login')}
+          </Link>
+        </Button>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function ProductGrid({
   items = [], 
   loading = false, 
   skeletonCount = 5,
-  gridCols = "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" 
+  gridCols = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
 }) {
   return (
     <div className={`grid ${gridCols} gap-3 md:gap-6 mt-6`}>

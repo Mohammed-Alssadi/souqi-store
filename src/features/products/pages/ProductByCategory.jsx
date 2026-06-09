@@ -11,7 +11,7 @@ import usePagination from '../../../hooks/usePagination';
 
 // Components
 import ProductGrid from '../components/ProductGrid';
-import Pagination from '../../../components/ui/Pagination';
+import Pagination from '../../../components/common/Pagination';
 
 /**
  * صفحة عرض المنتجات حسب التصنيف (Products by Category Page)
@@ -45,6 +45,7 @@ export default function ProductByCategory() {
     pageCount,
     handlePageClick,
     setCurrentPage,
+    currentPage,
   } = usePagination(filteredProducts, 8); // هنا نعرض 8 منتجات في كل صفحة
 
   // محاكاة تأخير التحميل عند تغيير التصنيف
@@ -96,17 +97,17 @@ export default function ProductByCategory() {
             items={currentItems} 
             loading={loading} 
             skeletonCount={8} 
-            gridCols="grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4"
+            gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
           />
 
           {/* 🟢 تذييل الصفحة: التصفح (Pagination) */}
           {!loading && filteredProducts.length > 0 && (
-            <div className="flex justify-between items-center w-full">
-              <p className="text-muted-foreground text-sm md:text-base mt-8 md:mt-12 md:pt-12 hidden md:inline-block">
+            <div className="flex justify-between items-center w-full mt-4 md:mt-12 md:pt-4 pb-8">
+              <p className="text-muted-foreground text-sm md:text-base hidden md:inline-block">
                 {t('products.showing', 'Showing {{count}} of {{total}} products', { count: currentItems.length, total: filteredProducts.length })}
               </p>
               
-              <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+              <Pagination pageCount={pageCount} onPageChange={handlePageClick} currentPage={currentPage} />
             </div>
           )}
         </>

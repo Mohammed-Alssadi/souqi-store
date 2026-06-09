@@ -16,6 +16,9 @@
     "profile": "My Profile",
     "settings": "Account Settings"
   },
+  "common": {
+    "loading": "Loading..."
+  },
   "footer": {
     "subscribe": "Subscribe to Our Newsletter",
     "subscribeSub": "Get the latest updates on new products and upcoming sales.",

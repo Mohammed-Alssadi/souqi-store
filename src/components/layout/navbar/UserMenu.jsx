@@ -3,16 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LogOut, Settings, ClipboardList, User } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 import { useAuthStore } from "../../../features/auth/store";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../../ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 
 export default function UserMenu() {
@@ -33,13 +33,12 @@ export default function UserMenu() {
 
   if (!user) {
     return (
-      <Link
-        to="/login"
-        className="hidden md:flex items-center gap-2 px-5 py-1.5 text-sm font-bold text-white bg-primary rounded-full hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
-      >
-        <User size={18} />
-        {t('navbar.login')}
-      </Link>
+      <Button asChild className="hidden md:flex rounded-full shadow-md hover:shadow-lg font-bold px-5 dark:text-zinc-300 ">
+        <Link to="/login">
+          <User size={18} className="me-2" />
+          {t('navbar.login')}
+        </Link>
+      </Button>
     );
   }
 
@@ -51,42 +50,53 @@ export default function UserMenu() {
     : fullName.slice(0, 2).toUpperCase();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="flex outline-none items-center justify-center h-10 w-10 rounded-full border border-border hover:border-primary/50 transition-colors focus-visible:ring-2 focus-visible:ring-primary">
-        <Avatar className="h-9 w-9">
+    <Sheet>
+      <SheetTrigger className="flex outline-none items-center justify-center h-8 w-8 rounded-full border border-border hover:border-primary/50 transition-colors focus-visible:ring-2 focus-visible:ring-primary">
+        <Avatar className="h-8 w-8">
           <AvatarImage src={user.user_metadata?.avatar_url || ""} alt={firstName} />
-          <AvatarFallback className="bg-primary/10 text-primary font-bold">{initials}</AvatarFallback>
+          <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">{initials}</AvatarFallback>
         </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 mt-2 rounded-2xl p-2 z-[100]">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-bold leading-none">{fullName}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+      </SheetTrigger>
+      <SheetContent side="end" className="w-[85vw] max-w-sm sm:max-w-sm p-6 flex flex-col h-full bg-background border-none shadow-2xl">
+        <SheetHeader className="pb-6 mb-2 border-b border-border text-start">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-16 w-16 border-2 border-primary/20">
+              <AvatarImage src={user.user_metadata?.avatar_url || ""} alt={firstName} />
+              <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">{initials}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col items-start text-start overflow-hidden">
+              <SheetTitle className="text-xl font-bold truncate w-full">{fullName}</SheetTitle>
+              <p className="text-sm text-muted-foreground truncate w-full">{user.email}</p>
+            </div>
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
-          <Link to="#" className="w-full flex items-center gap-2.5">
-            <ClipboardList size={16} className="text-muted-foreground" />
-            <span>{t('navbar.myOrders', 'My Orders')}</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild className="rounded-xl cursor-pointer">
-          <Link to="#" className="w-full flex items-center gap-2.5">
-            <Settings size={16} className="text-muted-foreground" />
-            <span>{t('navbar.settings', 'Account Settings')}</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem 
-          onClick={handleSignOut} 
-          className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-xl cursor-pointer flex items-center gap-2.5 font-semibold"
-        >
-          <LogOut size={16} />
-          <span>{t('navbar.signOut', 'Sign Out')}</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </SheetHeader>
+
+        <div className="flex flex-col gap-2 mt-4">
+          <Button variant="ghost" asChild className="w-full justify-start text-base h-14 rounded-xl px-4 hover:bg-secondary/60">
+            <Link to="#">
+              <ClipboardList size={22} className="me-3 text-primary" />
+              <span className="font-medium">{t('navbar.myOrders', 'My Orders')}</span>
+            </Link>
+          </Button>
+          <Button variant="ghost" asChild className="w-full justify-start text-base h-14 rounded-xl px-4 hover:bg-secondary/60">
+            <Link to="#">
+              <Settings size={22} className="me-3 text-primary" />
+              <span className="font-medium">{t('navbar.settings', 'Account Settings')}</span>
+            </Link>
+          </Button>
+        </div>
+
+        <div className="mt-auto pt-6 border-t border-border">
+          <Button 
+            variant="destructive" 
+            onClick={handleSignOut} 
+            className="w-full h-14 rounded-xl font-bold text-base shadow-md hover:shadow-lg"
+          >
+            <LogOut size={20} className="me-2" />
+            {t('navbar.signOut', 'Sign Out')}
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

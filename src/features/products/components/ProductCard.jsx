@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Star, Lock, ShoppingCart, Eye, Plus } from "lucide-react";
 import { useCartStore } from "../../cart/store";
-import DiscountBadge from "../../../components/ui/DiscountBadge";
+import DiscountBadge from "../../../components/common/DiscountBadge";
 import { useTranslation } from "react-i18next";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 function ProductCard({ product }) {
   const { t, i18n } = useTranslation();
@@ -12,12 +14,12 @@ function ProductCard({ product }) {
   const addToCart = useCartStore((state) => state.addToCart);
 
   return (
-    <div className="group border border-border rounded-xl shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 bg-card text-card-foreground relative flex flex-col h-full overflow-hidden">
+    <Card className="group border-border rounded-xl shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 relative flex flex-col h-full overflow-hidden p-0">
       
       {/* الجزء القابل للنقر (الصورة والعنوان) */}
       <Link to={`/product/${id}`} className="flex flex-col flex-grow">
         {/* صورة المنتج */}
-        <div className="relative bg-white dark:bg-white rounded-t-xl overflow-hidden flex justify-center items-center h-28 sm:h-32 md:h-52 w-full">
+        <div className="relative bg-white dark:bg-white rounded-t-xl overflow-hidden flex justify-center items-center h-48 lg:h-52 w-full">
           <div 
             className="absolute top-0 start-0 z-10"
           >
@@ -26,41 +28,32 @@ function ProductCard({ product }) {
           <img
             src={image}
             alt={title}
-            className="w-full h-full object-contain p-1.5 md:p-3 transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
         {/* العنوان والتقييم */}
-        <div className="px-1.5 md:px-4 pt-1 md:pt-3">
-          <h2 className="text-[11px] md:text-lg font-medium text-card-foreground truncate leading-tight md:leading-normal">
+        <CardContent className="px-4 pt-3 flex-grow pb-0">
+          <h2 className="text-base lg:text-lg font-medium text-card-foreground truncate leading-normal">
             {title}
           </h2>
-          <div className="flex items-center text-[9px] md:text-sm text-muted-foreground mt-0 md:mt-2">
+          <div className="flex items-center text-sm text-muted-foreground mt-2">
             <div className="flex items-center gap-0.5">
-              <Star className="w-2.5 h-2.5 md:w-4 md:h-4 text-yellow-500 fill-yellow-500" />
-              <span>{rating} <span className="hidden md:inline">(0)</span></span>
+              <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+              <span>{rating} <span className="inline">(0)</span></span>
             </div>
-            <span className="mx-1 hidden md:inline">•</span>
-            <span className="hidden md:inline">{sold} {t('product.sold', 'Sold')}</span>
-            <span className="md:hidden ms-auto text-muted-foreground/80">{sold} {t('product.sold', 'Sold')}</span>
+            <span className="mx-1 inline">•</span>
+            <span className="inline">{sold} {t('product.sold', 'Sold')}</span>
           </div>
-        </div>
+        </CardContent>
       </Link>
 
       {/* تفاصيل السعر والأزرار */}
-      <div className="px-1.5 md:px-4 pb-1.5 md:pb-4 pt-0 flex flex-col justify-end">
-          {/* السعر للموبايل */}
-          <div className="flex md:hidden flex-col mt-0.5">
-             <p className="text-[13px] font-bold text-red-600 leading-none">
-               ${price.toFixed(2)}
-             </p>
-             {oldPrice && (
-               <p className="text-[9px] text-muted-foreground line-through mt-0.5 leading-none">${oldPrice}</p>
-             )}
-          </div>
-
-          {/* السعر للشاشات الكبيرة */}
-          <div className="hidden md:flex mt-2 items-center gap-3">
+      <div className="px-4 pb-4 pt-0 flex flex-col justify-end">
+          {/* السعر الموحد */}
+          <div className="flex mt-2 items-center gap-3">
             <p className="text-lg font-bold text-red-600">
               ${price.toFixed(2)}
             </p>
@@ -69,30 +62,38 @@ function ProductCard({ product }) {
             )}
           </div>
 
-        {/* أزرار الشراء (للشاشات الصغيرة والكبيرة) */}
-        <div className="flex justify-between items-stretch gap-1 md:gap-2 mt-1.5 md:mt-4">
-          <button 
-            onClick={() => addToCart(product)}
-            className="flex-1 border border-border rounded md:rounded-lg py-1 md:py-2 text-primary hover:bg-accent hover:text-accent-foreground flex justify-center items-center transition-all"
+        {/* أزرار الشراء */}
+        <div className="flex justify-between items-stretch gap-2 mt-4">
+          <Button 
+            variant="outline"
+            size="icon"
+            onClick={(e) => { e.preventDefault(); addToCart(product); }}
+            className="flex-1 h-10 text-primary border-border hover:bg-accent hover:text-accent-foreground px-0 rounded-lg"
           >
-            <ShoppingCart className="w-3.5 h-3.5 md:w-5 md:h-5" />
-          </button>
+            <ShoppingCart className="w-5 h-5" />
+          </Button>
             
-          <Link 
-            to={`/product/${id}`}
-            className="flex-1 border border-border hover:border-primary/50 rounded md:rounded-lg py-1 md:py-2 text-primary hover:bg-accent hover:text-accent-foreground flex justify-center items-center transition-all"
+          <Button 
+            variant="outline"
+            size="icon"
+            asChild
+            className="flex-1 h-10 text-primary border-border hover:border-primary/50 hover:bg-accent hover:text-accent-foreground px-0 rounded-lg"
           >
-            <Eye className="w-3.5 h-3.5 md:w-5 md:h-5" />
-          </Link>
+            <Link to={`/product/${id}`}>
+              <Eye className="w-5 h-5" />
+            </Link>
+          </Button>
           
-          <button className="flex-[2] border border-primary text-primary rounded md:rounded-lg py-1 md:py-2 flex items-center justify-center gap-1 hover:bg-primary/10 transition-all text-[10px] md:text-sm font-bold">
-            <Lock className="w-3 h-3 md:w-4 md:h-4 hidden md:block" />
-            <span className="md:hidden truncate">{t('product.buy', 'Buy')}</span>
-            <span className="hidden md:inline">{t('product.buyNow', 'Buy Now')}</span>
-          </button>
+          <Button 
+            variant="outline"
+            className="flex-[2] h-10 border-primary text-primary hover:bg-primary/10 text-base font-bold px-2 rounded-lg"
+          >
+            <Lock className="w-4 h-4 mr-1" />
+            <span>{t('product.buyNow', 'Buy Now')}</span>
+          </Button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

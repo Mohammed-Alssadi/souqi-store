@@ -16,7 +16,7 @@ function Home() {
 
 
   return (
-    <div className='w-full px-0  md:container md:mx-auto md:px-5'>
+    <div className='w-full px-2 sm:px-4 md:container md:mx-auto md:px-5'>
      <HeroBaner/>
 
        

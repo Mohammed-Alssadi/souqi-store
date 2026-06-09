@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useProductStore } from "../store";
 import { useCartStore } from "../../cart/store";
-import { Galleria } from "primereact/galleria";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Navigation, Thumbs } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -19,6 +25,8 @@ function ProductDetails() {
   const localizedDescription = product ? (isAr ? product.description_ar : product.description_en) : '';
   const localizedAbout = product ? (isAr ? product.about_ar : product.about_en) : '';
 
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
   const [images] = useState(
     product
       ? [
@@ -29,72 +37,65 @@ function ProductDetails() {
       : []
   );
 
-  const responsiveOptions = [
-    { breakpoint: "1024px", numVisible: 2 },
-    { breakpoint: "768px", numVisible: 2 },
-    { breakpoint: "560px", numVisible: 2 },
-  ];
 
-  const itemTemplate = (item) => (
-    <div className="rounded-2xl p bg-card border border-border flex justify-center items-center overflow-hidden">
-      <img
-        src={item.itemImageSrc}
-        alt={item.alt}
-        className="h-[250px] md:h-[400px] w-full object-contain transition-transform duration-1000 ease-in-out transform hover:scale-150 cursor-zoom-in"
-      />
-    </div>
-  );
-
-  const thumbnailTemplate = (item) => (
-    <div className="overflow-hidden rounded-xl  p-4">
-      <img
-        src={item.thumbnailImageSrc}
-        alt={item.alt}
-        className=" w-[100px] h-[100px]  my-1 pt-0 object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
-      />
-    </div>
-  );
-
-  if (!product) {
-    return (
-      <div className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-3xl font-semibold mb-4 text-foreground">
-          {t('product.notFound', 'Product Not Found!')}
-        </h2>
-        <Link
-          to="/"
-          className="text-primary hover:text-primary/80 font-medium underline"
-        >
-          {t('product.returnToHome', 'Return to Home')}
-        </Link>
-      </div>
-    );
-  }
+    if (!product) {
+      return (
+        <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
+          <h2 className="text-3xl font-semibold mb-4 text-destructive">
+            {t('product.notFound', 'Product Not Found!')}
+          </h2>
+          <Button asChild>
+            <Link to="/">
+              {t('product.returnToHome', 'Return to Home')}
+            </Link>
+          </Button>
+        </div>
+      );
+    }
 
   return (
     <div className="container mx-auto px-2 md:px-6 py-3 md:py-5 min-h-[80vh]">
-      <Link
-        to="/#products"
-        className="text-primary hover:text-primary/80 inline-block font-medium mb-4 md:mb-6 px-2"
-      >
-        <span className={isAr ? "rotate-180 inline-block" : "inline-block"}>&larr;</span> {t('product.backToProducts', 'Back To Products')}
-      </Link>
+      <Button variant="link" className="text-primary hover:text-primary/80 font-medium mb-4 md:mb-6 px-0" asChild>
+        <Link to="/#products" className="flex items-center gap-1">
+          <span className={isAr ? "rotate-180 inline-block" : "inline-block"}>&larr;</span> {t('product.backToProducts', 'Back To Products')}
+        </Link>
+      </Button>
 
       {/* الشبكة الرئيسية */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
         {/* العمود الأول: الصور */}
-        <div dir="ltr" className="flex flex-col items-center rounded px-2 md:px-5 pb-0 lg:pb-12 overflow-hidden border-b md:border-b-0">
-          <Galleria
-            value={images}
-            responsiveOptions={responsiveOptions}
-            numVisible={2}
-            showIndicators={false}
-            showItemNavigators={false}
-            circular
-            item={itemTemplate}
-            thumbnail={thumbnailTemplate}
-            style={{ maxWidth: "400px" }}
-          />
+        <div dir="ltr" className="flex flex-col items-center rounded px-2 md:px-5 pb-0 lg:pb-12 overflow-hidden border-b md:border-b-0 w-full max-w-md mx-auto">
+          <Swiper
+            spaceBetween={10}
+            navigation={true}
+            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="w-full h-[300px] md:h-[400px] rounded-2xl bg-card border border-border flex justify-center items-center mb-4"
+          >
+            {images.map((item, idx) => (
+              <SwiperSlide key={idx} className="flex justify-center items-center p-4 bg-white dark:bg-white rounded-xl">
+                <img src={item.itemImageSrc} alt={item.alt} className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-110" loading="lazy" decoding="async" />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          
+          {images.length > 1 && (
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={10}
+              slidesPerView={4}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className="w-full h-24"
+            >
+              {images.map((item, idx) => (
+                <SwiperSlide key={idx} className="cursor-pointer overflow-hidden rounded-xl border border-transparent opacity-50 hover:opacity-100 transition-opacity bg-white dark:bg-white [&.swiper-slide-thumb-active]:border-primary [&.swiper-slide-thumb-active]:opacity-100">
+                  <img src={item.thumbnailImageSrc} alt={item.alt} className="w-full h-full object-contain p-2" loading="lazy" decoding="async" />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </div>
 
         {/* العمود الثاني: التفاصيل */}
@@ -199,20 +200,21 @@ function ProductDetails() {
 
           {/* زر الإضافة للسلة */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 w-full mt-4">
-            <button
+            <Button
               onClick={() => addToCart(product)}
-              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-[15px] px-6 py-3 font-semibold hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-lg"
+              className="flex-1 flex items-center justify-center gap-2 rounded-xl px-6 py-6 font-semibold shadow-lg"
             >
               <ShoppingCart size={22} />
               {t('product.addToCart', 'Add to Cart')}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => addToCart(product)}
-              className="flex-1 flex items-center justify-center border border-primary gap-2 text-primary rounded-[17px] px-7 py-3 font-semibold hover:bg-primary hover:text-primary-foreground active:scale-95 transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-2 rounded-xl border-primary text-primary hover:bg-primary/10 px-7 py-6 font-semibold"
             >
               <CreditCard size={22} />
               {t('product.buyNow', 'Buy Now')}
-            </button>
+            </Button>
           </div>
 
         </div>

@@ -9,7 +9,11 @@ lerna-debug.log*
 
 node_modules
 dist-ssr
+.agents/*
+.agents/*
 *.local
+
+skills-lock.json
 
 # production
 dist

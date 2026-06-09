@@ -1,37 +1,35 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent } from '@/components/ui/card';
 
-function CategoryCard({category}) {
-  const navigate = useNavigate();
+function CategoryCard({ category }) {
   const { i18n } = useTranslation();
+
   if (!category) {
-    return null; // أو <div>جار التحميل...</div>
+    return null;
   }
-const handleCategoryClick = () => {
- 
-  // التنقل إلى صفحة الصنف
-  navigate(`/category/${category.slug}`);
-};
+
+  const categoryName = i18n.language.startsWith('ar') ? category.name_ar : category.name_en;
+
   return (
-  
-<div className="">
-    <Link to={`/category/${category.slug}`}>
-    <div className="bg-card text-card-foreground  rounded-xl  transition-all duration-300 flex flex-col items-center group cursor-pointer md:w-[180px] overflow-hidden">
-      <div className="w-full bg-white dark:bg-white flex items-center justify-center p-3">
-        <img
-           src={category.image}
-          alt={i18n.language.startsWith('ar') ? category.name_ar : category.name_en}
-          className="mx-auto w-55 h-24 md:h-28 object-contain transition-all duration-500 group-hover:scale-110"
-        />
-      </div>
-      <div className="p-3 w-full text-center  border-border/50">
-        <p className="text-foreground font-medium text-sm truncate">{i18n.language.startsWith('ar') ? category.name_ar : category.name_en}</p>
-      </div>
-    </div>
+    <Link to={`/category/${category.slug}`} className="block w-full">
+      <Card className="transition-all duration-300 group cursor-pointer overflow-hidden border-none  shadow-none hover:shadow-xs">
+        <CardContent className="p-0 flex flex-col items-center">
+          <div className="w-full bg-white dark:bg-white flex items-center justify-center p-3 border- border-border/20">
+            <img
+              src={category.image}
+              alt={categoryName}
+              className="mx-auto h-28 object-contain transition-transform duration-500 group-hover:scale-110"
+            />
+          </div>
+          <div className="p-3 w-full text-center border- border-border/50">
+            <p className="text-foreground font-medium text-base truncate">{categoryName}</p>
+          </div>
+        </CardContent>
+      </Card>
     </Link>
-</div>
-  )
+  );
 }
 
-export default CategoryCard
+export default CategoryCard;

@@ -11,6 +11,9 @@ import {
   Phone,
   Send
 } from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 function Footer() {
   const { t, i18n } = useTranslation();
@@ -20,7 +23,7 @@ function Footer() {
     <footer className="bg-gray-50 dark:bg-zinc-950 border-t border-border pt-12 mt-16 transition-colors duration-300">
       
       {/* Newsletter Section */}
-      <div className="container mx-auto px-4 border-b border-border/60 pb-12">
+      <div className="container mx-auto px-4 pb-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 max-w-6xl mx-auto">
           <div className="text-center md:text-start flex-1">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
@@ -33,19 +36,21 @@ function Footer() {
 
           <div className="relative w-full sm:max-w-md flex-1">
             <div className="flex relative">
-              <input 
+              <Input 
                 type="email" 
                 placeholder={t('footer.yourEmail', 'Your email address...')} 
-                className="w-full py-3.5 px-6 rounded-full border border-border bg-white dark:bg-zinc-900 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm transition-all" 
+                className="w-full h-14 px-6 rounded-full border-border bg-white dark:bg-zinc-900 text-foreground shadow-sm transition-all focus-visible:ring-primary/20" 
               />
-              <button className="absolute end-1.5 top-1.5 bottom-1.5 bg-primary text-primary-foreground hover:bg-primary/90 px-6 rounded-full font-medium flex items-center gap-2 transition-transform hover:scale-105">
+              <Button className="absolute end-1.5 top-1.5 bottom-1.5 h-11 px-6 rounded-full font-medium flex items-center gap-2 transition-transform hover:scale-105">
                 <span className="hidden sm:inline">{t('footer.subscribeBtn', 'Subscribe')}</span>
                 <Send size={16} className={isAr ? 'rotate-180' : ''} />
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       </div>
+
+      <Separator className="opacity-60" />
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-16">
@@ -85,7 +90,7 @@ function Footer() {
           {/* 2. Quick Links */}
           <div>
             <h3 className="text-lg font-bold text-foreground mb-6">{t('footer.pages', 'Quick Links')}</h3>
-            <ul className="space-y-3.5 text-sm">
+            <ul className="flex flex-col gap-3.5 text-sm">
               {['home', 'about', 'faqs', 'contact'].map((item) => (
                 <li key={item}>
                   <Link to={item === 'home' ? '/' : `/${item}`} className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group">
@@ -119,7 +124,7 @@ function Footer() {
           {/* 4. Contact Info */}
           <div>
             <h3 className="text-lg font-bold text-foreground mb-6">{t('footer.contactUs', 'Contact Us')}</h3>
-            <ul className="space-y-4 text-sm text-muted-foreground">
+            <ul className="flex flex-col gap-4 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
                 <span>{t('footer.address', 'Yemen - Sana’a, Al-Tahrir Street')}</span>
@@ -139,7 +144,8 @@ function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-border/60 bg-white dark:bg-zinc-950/50">
+      <Separator className="opacity-60" />
+      <div className="bg-white dark:bg-zinc-950/50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground max-w-7xl mx-auto">
             <p>

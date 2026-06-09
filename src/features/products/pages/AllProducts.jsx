@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Filter } from "lucide-react";
-import { useMediaQuery } from "@mui/material";
+import { Button } from "@/components/ui/button";
 
 // Stores
 import { useProductStore } from "../store";
@@ -14,7 +14,7 @@ import usePagination from "../../../hooks/usePagination";
 // Components
 import SlidbarFilter from "../components/SlidbarFilter";
 import ProductGrid from "../components/ProductGrid";
-import Pagination from "../../../components/ui/Pagination";
+import Pagination from "../../../components/common/Pagination";
 
 /**
  * صفحة عرض جميع المنتجات (All Products Page)
@@ -22,7 +22,6 @@ import Pagination from "../../../components/ui/Pagination";
  */
 export default function AllProducts() {
   const { t, i18n } = useTranslation();
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
   
   const products = useProductStore((state) => state.items);
   const categories = useCategoryStore((state) => state.items);
@@ -47,6 +46,7 @@ export default function AllProducts() {
     pageCount,
     handlePageClick,
     setCurrentPage,
+    currentPage,
   } = usePagination(filteredProducts, 10);
 
   // معالجات أحداث الفلترة لربطها بصفحة المنتجات
@@ -64,20 +64,20 @@ export default function AllProducts() {
   };
 
   return (
-    <div className="container px-1 min-h-[60vh]">
+    <div className="container py-4 md:py-5 px-1 min-h-[60vh]">
       {/* 🟢 رأس الصفحة وأيقونة الفلترة */}
       <div className="flex justify-between items-center py-2 md:py-4 px-2 md:px-5 rounded-lg bg-card">
         <h1 className="text-lg md:text-3xl font-semibold">{t('products.title', 'Products')}</h1>
-        <button 
-          className="flex items-center text-md md:text-lg rounded-xl px-1 md:px-3 cursor-pointer text-foreground hover:text-primary transition-colors"
+        <Button 
+          variant="ghost"
+          className="flex items-center text-md md:text-lg rounded-xl px-2 md:px-4 text-foreground hover:text-primary transition-colors h-auto py-2"
           onClick={() => setVisible(true)}
         >
           {t('products.filter', 'filter')}
           <Filter
-            size={isSmallScreen ? 35 : 45}
-            className="text-primary py-2 px-1 rounded-lg hover:text-primary/80 transition"
+            className="w-6 h-6 md:w-8 md:h-8 text-primary ms-2"
           />
-        </button>
+        </Button>
       </div>
 
       {/* 🟢 قائمة الفلترة الجانبية */}
@@ -104,17 +104,17 @@ export default function AllProducts() {
         items={currentItems} 
         loading={loading} 
         skeletonCount={10} 
-        gridCols="grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+        gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
       />
 
       {/* 🟢 تذييل الصفحة: التصفح (Pagination) وعدد المنتجات */}
       {filteredProducts.length > 0 && (
-        <div className="flex justify-between items-center">
-          <p className="text-muted-foreground text-sm md:text-base mt-8 md:mt-12 md:pt-12 hidden md:inline-block">
+        <div className="flex justify-between items-center w-full mt-4 md:mt-12 md:pt-4 pb-8">
+          <p className="text-muted-foreground text-sm md:text-base hidden md:inline-block">
             {t('products.showing', 'Showing {{count}} of {{total}} products', { count: currentItems.length, total: filteredProducts.length })}
           </p>
           
-          <Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+          <Pagination pageCount={pageCount} onPageChange={handlePageClick} currentPage={currentPage} />
         </div>
       )}
     </div>

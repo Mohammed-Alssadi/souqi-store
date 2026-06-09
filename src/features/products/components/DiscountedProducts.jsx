@@ -66,19 +66,19 @@ function DiscountedProducts() {
           key={i18n.language}
           dir={isAr ? "rtl" : "ltr"}
           modules={[Navigation, Autoplay, Pagination]}
-          spaceBetween={20}
+          spaceBetween={2}
           slidesPerView={4}
           pagination={{ clickable: true }}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           loop={true}
           grabCursor={true}
           breakpoints={{
-            1400: { slidesPerView: 5, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 20 },
-            992: { slidesPerView: 3, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 15 },
-            575: { slidesPerView: 3, spaceBetween: 15 },
-            0: { slidesPerView: 2, spaceBetween: 10 },
+            1280: { slidesPerView: 5, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 20 },
+            768: { slidesPerView: 3.5, spaceBetween: 20 },
+            640: { slidesPerView: 2.5, spaceBetween: 15 },
+            480: { slidesPerView: 2, spaceBetween: 15 },
+            0: { slidesPerView: 1, spaceBetween: 0 },
           }}
           className=" mb-8 overflow-hidden "
         >

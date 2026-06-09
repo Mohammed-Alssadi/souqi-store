@@ -1,19 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+
 function CategoryCardSkeleton() {
   return (
-    <div className="animate-pulse bg-card border border-border rounded-xl flex flex-col items-center md:w-[180px] overflow-hidden">
-      <div className="w-full bg-white dark:bg-zinc-600 flex items-center justify-center p-3">
-        <div className="bg-gray-200 dark:bg-zinc-800 h-24 md:h-28 w-full rounded-lg"></div>
+    <Card className="w-full overflow-hidden border-border/50">
+      <CardContent className="p-0 flex flex-col items-center">
+        <div className="w-full bg-secondary/10 flex items-center justify-center p-3 border-b border-border/20">
+        <Skeleton className="w-28 h-28 rounded-md" />
       </div>
-      <div className="p-3 w-full flex justify-center border-t border-border/50">
-        <div className="h-4 bg-gray-300 dark:bg-zinc-700 rounded w-2/3"></div>
+      <div className="p-3 w-full border-t border-border/50">
+        <Skeleton className="h-5 w-3/4 mx-auto" />
       </div>
-    </div>
-  )
-
-
-
-
+      </CardContent>
+    </Card>
+  );
 }
 
-export default CategoryCardSkeleton
+export default CategoryCardSkeleton;
