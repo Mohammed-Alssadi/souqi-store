@@ -30,7 +30,7 @@ export default function MobileMenu({ onOpenSearch }) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden rounded-full hover:bg-transparent w-10 h-10">
+        <Button variant="ghost" size="icon" className="xl:hidden rounded-full hover:bg-transparent w-10 h-10">
           <Menu size={30} strokeWidth={1.75} />
         </Button>
       </SheetTrigger>
@@ -68,18 +68,17 @@ export default function MobileMenu({ onOpenSearch }) {
           </div>
 
           {/* التفضيلات */}
-          <div className="px-5 py-4 mt-auto">
-             <div className="h-[1px] bg-border w-full mb-5"></div>
-             <p className="text-[11px] font-bold text-muted-foreground mb-4 uppercase tracking-wider">
-               {i18n.language.startsWith('ar') ? 'التفضيلات' : 'Preferences'}
+          <div className="p-4 mt-auto mb-2">
+             <p className="text-[11px] font-bold text-muted-foreground mb-3 px-2 uppercase tracking-wider">
+               {i18n.language.startsWith('ar') ? 'تخصيص الواجهة' : 'Preferences'}
              </p>
-             <div className="flex flex-col gap-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{i18n.language.startsWith('ar') ? 'المظهر' : 'Theme'}</span>
+             <div className="flex flex-col bg-secondary/50 dark:bg-secondary/20 rounded-2xl border border-border overflow-hidden">
+                <div className="flex items-center justify-between p-4 border-b border-border/60">
+                  <span className="text-sm font-bold">{i18n.language.startsWith('ar') ? 'المظهر (ليلي/نهاري)' : 'Theme'}</span>
                   <ThemeToggle />
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{i18n.language.startsWith('ar') ? 'اللغة' : 'Language'}</span>
+                <div className="flex items-center justify-between p-4">
+                  <span className="text-sm font-bold">{i18n.language.startsWith('ar') ? 'لغة المتجر' : 'Language'}</span>
                   <LangSwitch />
                 </div>
              </div>

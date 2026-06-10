@@ -51,7 +51,7 @@ export default function AllProducts() {
     handlePageClick,
     setCurrentPage,
     currentPage,
-  } = usePagination(filteredProducts, 10);
+  } = usePagination(filteredProducts, 12);
 
   // معالجات أحداث الفلترة لربطها بصفحة المنتجات
   const onApply = () => {
@@ -113,8 +113,7 @@ export default function AllProducts() {
       <ProductGrid 
         items={currentItems} 
         loading={isPageLoading} 
-        skeletonCount={10} 
-        gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
+        skeletonCount={12} 
       />
 
       {/* 🟢 تذييل الصفحة: التصفح (Pagination) وعدد المنتجات */}

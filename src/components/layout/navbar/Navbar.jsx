@@ -59,7 +59,7 @@ export default function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileSearchOpen(true)}
-              className="md:hidden rounded-full hover:bg-transparent px-0 mx-0 hover:text-primary w-10 h-10"
+              className="xl:hidden rounded-full hover:bg-transparent px-0 mx-0 hover:text-primary w-10 h-10"
             >
               <Search size={26} />
             </Button>
@@ -78,12 +78,12 @@ export default function Navbar() {
             </div>
 
             {/* مغير المظهر للديسكتوب */}
-            <div className="hidden lg:block">
+            <div className="hidden xl:block">
               <ThemeToggle />
             </div>
 
             {/* مغير اللغة للديسكتوب */}
-            <LangSwitch className="hidden lg:flex" />
+            <LangSwitch className="hidden xl:flex" />
 
             {/* قائمة المستخدم والأفاتار */}
             {user && <UserMenu />}

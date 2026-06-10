@@ -52,7 +52,7 @@ function ForYouSection() {
       {loading ? (
         <div className="flex gap-3 md:gap-6 mt-2 pt-2 pb-2 mb-8 overflow-hidden">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[15%] shrink-0 px-1 mb-12">
+            <div key={i} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[18.5%] 2xl:w-[15.5%] shrink-0 px-1 mb-12">
               <ProductCardSkeleton />
             </div>
           ))}
@@ -74,7 +74,8 @@ function ForYouSection() {
             loop={true}
             grabCursor={true}
             breakpoints={{
-              1280: { slidesPerView: 6, spaceBetween: 10 },
+               1536: { slidesPerView: 6, spaceBetween: 10 },
+              1280: { slidesPerView: 5, spaceBetween: 10 },
               1024: { slidesPerView: 4, spaceBetween: 20 },
               768: { slidesPerView: 3.5, spaceBetween: 20 },
               640: { slidesPerView: 2.5, spaceBetween: 15 },

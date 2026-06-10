@@ -54,7 +54,7 @@ export default function HomeSkeleton() {
           </div>
           <div className="flex gap-3 sm:gap-4 md:gap-6 overflow-hidden mt-2 pt-2 pb-2 mb-8 px-4">
              {Array.from({ length: 6 }).map((_, idx) => (
-               <div key={idx} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[15%] shrink-0 px-1 mb-12">
+               <div key={idx} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[18.5%] 2xl:w-[15.5%] shrink-0 px-1 mb-12">
                  <ProductCardSkeleton />
                </div>
              ))}

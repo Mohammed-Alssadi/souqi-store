@@ -12,7 +12,7 @@ export default function NavLinks() {
   ];
 
   return (
-    <nav className="hidden lg:flex gap-6">
+    <nav className="hidden xl:flex gap-6">
       {links.map((link, index) => (
         <Link key={index} to={`/${link.path}`} className="text-foreground font-medium hover:text-primary transition-colors">
           {link.name}

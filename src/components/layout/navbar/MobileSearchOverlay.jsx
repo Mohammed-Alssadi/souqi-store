@@ -27,7 +27,7 @@ export default function MobileSearchOverlay({ isOpen, setIsOpen }) {
   };
 
   return (
-    <div className="absolute top-full start-0 end-0 bg-background p-4 shadow-xl border-t border-border lg:hidden z-50 animate-in fade-in slide-in-from-top-2">
+    <div className="absolute top-full start-0 end-0 bg-background p-4 shadow-xl border-t border-border xl:hidden z-50 animate-in fade-in slide-in-from-top-2">
       <form onSubmit={handleSearch} className="flex gap-2">
         <Input
           type="text"

@@ -24,7 +24,7 @@ export default function HeroBanner() {
 
 
   return (
-    <div className="relative  dark:bg-zinc-900/50  dark:border-zinc-800/50 overflow-hidden">
+    <div className="relative   overflow-hidden">
       <div className="flex flex-col md:flex-row items-center h-full md:h-[80vh] w-full">
         
         {/* Text Content Area (Static) */}

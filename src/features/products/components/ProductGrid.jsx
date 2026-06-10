@@ -16,8 +16,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ProductGrid({ 
   items = [], 
   loading = false, 
-  skeletonCount = 5,
-  gridCols = "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+  skeletonCount = 12,
+  gridCols = "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6"
 }) {
   return (
     <motion.div 

@@ -22,7 +22,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="hidden lg:block flex-1 max-w-md mx-6">
+    <div className="hidden xl:block flex-1 max-w-md mx-6">
       <form onSubmit={handleSearch} className="relative">
         <Input
           type="text"
