@@ -114,7 +114,27 @@
   },
   "home": {
     "title": "Home",
-    "desc": "Discover the best products and exclusive offers at Souqi. Shop now!"
+    "desc": "Discover the best products and exclusive offers at Souqi. Shop now!",
+    "heroBanner": {
+      "slides": [
+        {
+          "badge": "Exclusive Release 2024",
+          "title": "Elevate Your Style",
+          "subtitle": "Unmatched Luxury",
+          "desc": "Discover our new collection. Exceptional designs crafted to inspire your senses and match your ambitions, with up to 40% off.",
+          "btn1": "Explore Collection",
+          "btn2": "View Lookbook"
+        },
+        {
+          "badge": "BEST SELLER",
+          "title": "Unmatched Elegance",
+          "subtitle": "Fragrances",
+          "desc": "Discover our exclusive collection of luxury fragrances that reflect your personality.",
+          "btn1": "Discover More",
+          "btn2": "All Products"
+        }
+      ]
+    }
   },
   "products": {
     "title": "Products",

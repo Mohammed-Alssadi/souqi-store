@@ -8,6 +8,23 @@ export default {
     "./node_modules/tw-elements/js/**/*.js",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.5rem",
+        md: "2rem",
+        lg: "14rem",
+        xl: "14rem",
+      },
+      screens: {
+        sm: "100%",
+        md: "100%",
+        lg: "100%",
+        xl: "100%",
+        "2xl": "100%",
+      },
+    },
     extend: {
       colors: {
         border: "hsl(var(--border) / <alpha-value>)",

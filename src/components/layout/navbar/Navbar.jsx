@@ -40,7 +40,7 @@ export default function Navbar() {
       className={`sticky top-0 start-0 end-0 z-50 w-full transition-colors duration-500 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80 border-b border-border shadow-sm`}
     >
       <div className={`transition-all duration-300 ${isScrolled ? "py-3 md:py-3" : "py-3 md:py-5"}`}>
-        <div className="w-full px-4 md:container md:mx-auto flex items-center justify-between">
+        <div className="w-full px-3 max-w-[1700px] mx-auto flex items-center justify-between">
           
           {/* الشعار */}
           <Logo />

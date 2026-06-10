@@ -15,7 +15,7 @@ function ProductCard({ product }) {
   const addToCart = useCartStore((state) => state.addToCart);
 
   return (
-    <Card className="group border-border rounded-xl shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 relative flex flex-col h-full overflow-hidden p-0">
+    <Card className="group border-border rounded-xl shadow-sm hover:shadow-xl hover:border-primary/40 hover:-translate-y-1.5 transition-all duration-500 relative flex flex-col h-full overflow-hidden p-0 bg-card">
       
       {/* الجزء القابل للنقر (الصورة والعنوان) */}
       <Link to={`/product/${id}`} className="flex flex-col flex-grow">
@@ -29,33 +29,33 @@ function ProductCard({ product }) {
           <img
             src={image}
             alt={title}
-            className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-110 "
             loading="lazy"
             decoding="async"
           />
         </div>
 
         {/* العنوان والتقييم */}
-        <CardContent className="px-4 pt-3 flex-grow pb-0">
-          <h2 className="text-base lg:text-lg font-medium text-card-foreground truncate leading-normal">
+        <CardContent className="px-4 pt-4 flex-grow pb-0">
+          <h2 className="text-base lg:text-lg font-medium text-card-foreground line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
             {title}
           </h2>
-          <div className="flex items-center text-sm text-muted-foreground mt-2">
+          <div className="flex items-center text-sm text-muted-foreground mt-2.5">
             <div className="flex items-center gap-0.5">
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-              <span>{rating} <span className="inline">(0)</span></span>
+              <span className="font-medium text-foreground">{rating} <span className="inline font-normal text-muted-foreground">(0)</span></span>
             </div>
-            <span className="mx-1 inline">•</span>
+            <span className="mx-1.5 inline text-border">•</span>
             <span className="inline">{sold} {t('product.sold', 'Sold')}</span>
           </div>
         </CardContent>
       </Link>
 
       {/* تفاصيل السعر والأزرار */}
-      <div className="px-4 pb-4 pt-0 flex flex-col justify-end">
+      <div className="px-4 pb-4 pt-2 flex flex-col justify-end overflow-hidden relative">
           {/* السعر الموحد */}
-          <div className="flex mt-2 items-center gap-3">
-            <p className="text-lg font-bold text-red-600">
+          <div className="flex mt-1 items-center gap-2 mb-2 group-hover:mb-0 transition-all duration-300">
+            <p className="text-xl font-bold text-red-600">
               ${price.toFixed(2)}
             </p>
             {oldPrice && (
@@ -63,8 +63,8 @@ function ProductCard({ product }) {
             )}
           </div>
 
-        {/* أزرار الشراء */}
-        <div className="flex justify-between items-stretch gap-2 mt-4">
+        {/* أزرار الشراء (تنزلق للأعلى عند التمرير في الشاشات الكبيرة) */}
+        <div className="flex justify-between items-stretch gap-2 mt-3 lg:translate-y-12 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 transition-all duration-300 ease-out">
           <Button 
             variant="outline"
             size="icon"
@@ -73,7 +73,7 @@ function ProductCard({ product }) {
               addToCart(product);
               toast.success(t('cart.addedSuccess', 'Added to cart successfully!'));
             }}
-            className="flex-1 h-10 text-primary border-border hover:bg-accent hover:text-accent-foreground px-0 rounded-lg"
+            className="flex-1 h-10 text-primary border-border hover:border-primary hover:bg-primary/5 hover:text-primary px-0 rounded-lg shadow-sm"
           >
             <ShoppingCart className="w-5 h-5" />
           </Button>
@@ -82,7 +82,7 @@ function ProductCard({ product }) {
             variant="outline"
             size="icon"
             asChild
-            className="flex-1 h-10 text-primary border-border hover:border-primary/50 hover:bg-accent hover:text-accent-foreground px-0 rounded-lg"
+            className="flex-1 h-10 text-primary border-border hover:border-primary hover:bg-primary/5 hover:text-primary px-0 rounded-lg shadow-sm"
           >
             <Link to={`/product/${id}`}>
               <Eye className="w-5 h-5" />
@@ -90,10 +90,9 @@ function ProductCard({ product }) {
           </Button>
           
           <Button 
-            variant="outline"
-            className="flex-[2] h-10 border-primary text-primary hover:bg-primary/10 text-base font-bold px-2 rounded-lg"
+            className="flex-[2] h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           >
-            <Lock className="w-4 h-4 mr-1" />
+            <Lock className="w-4 h-4 me-1.5" />
             <span>{t('product.buyNow', 'Buy Now')}</span>
           </Button>
         </div>

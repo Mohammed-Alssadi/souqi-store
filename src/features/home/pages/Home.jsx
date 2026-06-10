@@ -24,10 +24,13 @@ function Home() {
         description={t('home.desc', 'Discover the best products and exclusive offers at Souqi. Shop now!')}
         url="/"
       />
-      <div className='w-full px-2 sm:px-4 md:container md:mx-auto md:px-5'>
-       <HeroBaner/>
+      
+      {/* Hero Banner (Full Width) */}
+      <div className="w-full">
+        <HeroBaner/>
+      </div>
 
-       
+      <div className='w-full px-2 sm:px-4 md:container md:mx-auto md:px-5'>
         <div id="categories" className="mt-5 pt-5 md:mt-10 md:pt-10">
        
          <TopCategories />
@@ -39,12 +42,15 @@ function Home() {
   onClick={()=>dispatch(setSelectedCategory(item))}
    className='bg-secondary py-2 px-6 rounded-md text-secondary-foreground active:scale-105 hover:bg-secondary/80 transition-all ease-in '>{item}</button> )}
 </div> */}
+        
+        {/* مميزات المتجر (التوصيل، الدعم، إلخ) */}
+        <Delivery />
+
         <section id="products">
           
           <ForYouSection />
           <DiscountedProducts/>
           <BestSelling />
-          <Delivery/>
         </section>
        
       </div>

@@ -48,7 +48,7 @@ function App() {
     document.documentElement.lang = i18n.language;
     
     // تحديث عنوان الموقع ديناميكياً
-    document.title = i18n.language.startsWith('ar') ? 'سوقي | أحدث المنتجات' : 'Souqi | Latest Products';
+    // تمت إزالته لكي يتولى مكون SEO (react-helmet-async) إدارة العنوان حسب الصفحة
   }, [i18n, i18n.language]);
 
   // مزامنة حالة الجلسة مع Supabase بشكل نشط وتلقائي عند فتح الموقع أو تحديث الصفحة
@@ -117,7 +117,7 @@ function App() {
           <ScrollManager />
           <Navbar />
 
-          <main className="container mx-auto min-h-[70vh] px-1 md:px-4">
+          <main className="container mx-auto px-5 w-full min-h-[70vh]">
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 {/* المستخدم */}

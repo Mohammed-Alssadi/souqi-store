@@ -14,6 +14,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import PageLoader from "../../../components/common/PageLoader";
 import SEO from "../../../components/common/SEO";
+import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -47,7 +48,7 @@ function ProductDetails() {
 
 
     if (isLoading && !product) {
-      return <PageLoader />;
+      return <ProductDetailsSkeleton />;
     }
 
     if (!isLoading && !product) {

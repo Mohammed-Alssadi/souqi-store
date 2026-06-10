@@ -6,6 +6,7 @@ import CategoryCard from '../components/CategoryCard';
 import CategoryCardSkeleton from '../components/CategoryCardSkeleton';
 import { Button } from '@/components/ui/button';
 import SEO from '../../../components/common/SEO';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function AllCategories() {
     const { t } = useTranslation();
@@ -28,32 +29,43 @@ function AllCategories() {
 
     return (
         <>
-            <SEO 
+            <SEO
                 title={t('categories.allCategories', 'All Categories')}
                 description={t('categories.allCategoriesDesc', 'Browse all categories to find the products you need.')}
                 url="/categories"
             />
-            <div className="min-h-[60vh] container mx-auto px-4">
-                <h1 className='my-6 text-3xl font-bold text-foreground'>{t('categories.allCategories', 'All Categories')}</h1>
+            <div className="min-h-[60vh] container mx-auto px-4 py-6 md:py-10">
+                <h1 className='md:text-3xl text-xl mb-4 text-foreground'>{t('categories.allCategories', 'All Categories')}</h1>
 
 
 
             {loading ? (
                 <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-3 md:gap-4">
-                    {categories.map((cat) => {
-                        return <CategoryCardSkeleton key={cat.id} />
-                    })}
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <CategoryCardSkeleton key={i} />
+                    ))}
                 </div>
 
             ) : (
 
-                <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-3 md:gap-8">
-                    {categories.map((cat) => {
-                        return <CategoryCard key={cat.id} category={cat} />
-
-                    })}
-
-                </div>
+                <motion.div layout className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-3 md:gap-8">
+                    <AnimatePresence>
+                        {categories.map((cat, index) => {
+                            return (
+                                <motion.div
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    key={cat.id}
+                                >
+                                    <CategoryCard category={cat} />
+                                </motion.div>
+                            );
+                        })}
+                    </AnimatePresence>
+                </motion.div>
 
             )}
 

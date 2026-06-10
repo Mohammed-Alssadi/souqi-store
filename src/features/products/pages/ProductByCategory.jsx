@@ -110,7 +110,7 @@ export default function ProductByCategory() {
             items={currentItems} 
             loading={loading} 
             skeletonCount={8} 
-            gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
           />
 
           {/* 🟢 تذييل الصفحة: التصفح (Pagination) */}

@@ -1,17 +1,18 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useProductStore } from "../store";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useMemo } from 'react';
+import { useProductStore } from '../store';
+import ProductCard from './ProductCard';
+import ProductCardSkeleton from './ProductCardSkeleton';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Link } from 'react-router-dom';
+import { ArrowRightFromLine } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-import { Navigation, Pagination, Autoplay } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import ProductCard from "./ProductCard";
-import ProductCardSkeleton from "./ProductCardSkeleton";
-import { Link } from "react-router-dom";
-import { ArrowRightFromLine } from "lucide-react";
-import '../../../index.css';
-import { useTranslation } from "react-i18next";
+import { motion } from 'framer-motion';
+import { fadeUpVariant } from '../../../utils/animations';
 
 function BestSelling() {
   const { t, i18n } = useTranslation();
@@ -19,34 +20,35 @@ function BestSelling() {
   const products = useProductStore((state) => state.items);
   const loading = useProductStore((state) => state.isLoading);
 
-  // 🧠 فرز المنتجات حسب الأكثر مبيعاً محلياً (Derived State)
+  // ⚙️ إعداد البيانات (فرز وعرض أول 10 منتجات مباعة) محلياً بدون useEffect
   const bestSelling = useMemo(() => {
     if (!Array.isArray(products) || products.length === 0) return [];
-    return [...products]
-      .sort((a, b) => b.sold - a.sold)
-      .slice(0, 10);
+    return [...products].sort((a, b) => b.sold - a.sold).slice(0, 10);
   }, [products]);
-
-
 
   return (
     <div className="mt-1">
-      {/* 🔹 العنوان والرابط */}
-      <div className="flex  md:flex-row justify-between items-center py-2 md:mb-6">
-        <p className="text-center text-xl md:text-4xl font-semibold text-foreground md:text-start">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={fadeUpVariant}
+        className="flex md:flex-row justify-between items-center py-2 md:mb-6"
+      >
+        <h2 className="text-center text-lg md:text-4xl font-semibold text-foreground md:text-start mb-1">
           {t('home.bestSelling', 'Best Selling')}
-        </p>
+        </h2>
         <Link
           to="/products"
-          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-xl flex items-center"
+          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-lg py-2 flex items-center"
         >
           {t('home.seeAll', 'See All')}
-          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-lg text-primary`} />
+          <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-xl text-primary`} />
         </Link>
-      </div>
+      </motion.div>
 
-      {/* ⏳ أثناء التحميل */}
       {loading ? (
+        // 🔄 عرض هيكل التحميل أثناء الانتظار
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 5 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
@@ -54,7 +56,7 @@ function BestSelling() {
         </div>
       ) : (
         bestSelling.length > 0 && (
-          <div className=" px-2">
+          <div className=" px-2 mt-2">
             {/* 🌀 سلايدر Swiper */}
             <Swiper
               key={i18n.language}
@@ -73,7 +75,7 @@ function BestSelling() {
               loop={true} // يجعل السلايدر دائري
               grabCursor={true} // يجعل المؤشر بشكل اليد عند السحب
               breakpoints={{
-                1280: { slidesPerView: 5, spaceBetween: 20 },
+                1280: { slidesPerView: 6, spaceBetween: 10 },
                 1024: { slidesPerView: 4, spaceBetween: 20 },
                 768: { slidesPerView: 3.5, spaceBetween: 20 },
                 640: { slidesPerView: 2.5, spaceBetween: 15 },
@@ -83,11 +85,17 @@ function BestSelling() {
               className="pb-2 mb-8 p overflow-hidden"
             >
               {/* 🧱 بطاقات المنتجات */}
-              {bestSelling.map((product) => (
+              {bestSelling.map((product, index) => (
                 <SwiperSlide key={product.id}>
-                  <div className="px-1 mb-12 mx-">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="px-1 mb-12 mx-"
+                  >
                     <ProductCard product={product} />
-                  </div>
+                  </motion.div>
                 </SwiperSlide>
               ))}
             </Swiper>

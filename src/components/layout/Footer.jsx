@@ -15,15 +15,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
+import { motion } from 'framer-motion';
+import { staggerContainer, fadeUpVariant } from '../../utils/animations';
+
 function Footer() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
 
   return (
-    <footer className="bg-gray-50 dark:bg-zinc-950 border-t border-border pt-12 mt-16 transition-colors duration-300">
+    <footer className="bg-gray-50 dark:bg-zinc-950 border-t border-border pt-12 mt-16 transition-colors duration-300 overflow-hidden">
       
       {/* Newsletter Section */}
-      <div className="container mx-auto px-4 pb-12">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+        variants={fadeUpVariant}
+        className="container mx-auto px-4 pb-12"
+      >
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 max-w-6xl mx-auto">
           <div className="text-center md:text-start flex-1">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
@@ -48,7 +57,7 @@ function Footer() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Separator className="opacity-60" />
 
@@ -57,7 +66,10 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 xl:gap-16 max-w-7xl mx-auto">
           
           {/* 1. Brand & About */}
-          <div className="flex flex-col gap-6">
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUpVariant} 
+            className="flex flex-col gap-6"
+          >
             <Link to="/" className="inline-block group">
               {isAr ? (
                 <div className="flex items-center font-logo-rest-ar font-black" dir="rtl">
@@ -85,10 +97,10 @@ function Footer() {
                 </a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* 2. Quick Links */}
-          <div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUpVariant}>
             <h3 className="text-lg font-bold text-foreground mb-6">{t('footer.pages', 'Quick Links')}</h3>
             <ul className="flex flex-col gap-3.5 text-sm">
               {['home', 'about', 'faqs', 'contact'].map((item) => (
@@ -100,10 +112,10 @@ function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* 3. Top Categories */}
-          <div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUpVariant}>
             <h3 className="text-lg font-bold text-foreground mb-6">{t('navbar.categories', 'Top Categories')}</h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-3.5 text-sm">
               {[
@@ -119,10 +131,10 @@ function Footer() {
                 </Link>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* 4. Contact Info */}
-          <div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeUpVariant}>
             <h3 className="text-lg font-bold text-foreground mb-6">{t('footer.contactUs', 'Contact Us')}</h3>
             <ul className="flex flex-col gap-4 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
@@ -138,7 +150,7 @@ function Footer() {
                 <span>support@souqi.com</span>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
         </div>
       </div>

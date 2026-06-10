@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRightFromLine } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import { motion } from 'framer-motion';
+import { fadeUpVariant } from '../../../utils/animations';
+
 function ForYouSection() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
@@ -23,68 +26,78 @@ function ForYouSection() {
     return [...products].sort(() => Math.random() - 0.5).slice(0, 10);
   }, [products]);
 
-
-
   return (
     <div className="mt-2">
       {/* العنوان ورابط "See All" */}
-      <div className="flex md:flex-row justify-between items-center py-2 md:mb-6 ">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={fadeUpVariant}
+        className="flex md:flex-row justify-between items-center py-2 md:mb-6 "
+      >
         <h2 className="text-center text-lg md:text-4xl font-semibold text-foreground md:text-start">
           {t('home.forYou', 'Just For You')}
         </h2>
         <Link
           to="/products"
-          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-lg py-2    flex items-center"
+          className="text-muted-foreground hover:text-foreground font-medium text-md md:text-lg py-2 flex items-center"
         >
           {t('home.seeAll', 'See All')}
           <ArrowRightFromLine className={`${isAr ? 'me-3 rotate-180' : 'ms-3'} text-xl text-primary`} />
         </Link>
-      </div>
+      </motion.div>
 
       {/* حالة التحميل */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
           {Array.from({ length: 5 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
         </div>
       ) : forYou.length > 0 ? (
-        <div className="px-2">
+        <div className=" px-2 mt-2">
           {/* سلايدر Swiper */}
           <Swiper
             key={i18n.language}
             dir={isAr ? "rtl" : "ltr"}
-            modules={[Navigation, Pagination, Autoplay]}
+            modules={[Navigation, Autoplay, Pagination]}
             spaceBetween={20}
             slidesPerView={4}
             pagination={{ clickable: true }}
             autoplay={{
-              delay: 2500,
+              delay: 3500,
               disableOnInteraction: false,
             }}
             loop={true}
             grabCursor={true}
             breakpoints={{
-              1280: { slidesPerView: 5, spaceBetween: 20 },
+              1280: { slidesPerView: 6, spaceBetween: 10 },
               1024: { slidesPerView: 4, spaceBetween: 20 },
               768: { slidesPerView: 3.5, spaceBetween: 20 },
               640: { slidesPerView: 2.5, spaceBetween: 15 },
               480: { slidesPerView: 2, spaceBetween: 15 },
               0: { slidesPerView: 1, spaceBetween: 0 },
             }}
-            className="pb-2 mb-8 px-4 overflow-hidden"
+            className="pb-2 mb-8  overflow-hidden"
           >
-            {forYou.map((p) => (
-              <SwiperSlide key={p.id}>
-                <div className="px-1 pb-8 mb-6">
-                  <ProductCard product={p} />
-                </div>
+            {forYou.map((product, index) => (
+              <SwiperSlide key={product.id}>
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="px-1 mb-12"
+                >
+                  <ProductCard product={product} />
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
       ) : (
-        <p className="text-center text-muted-foreground mt-6">{t('home.noProducts', 'No products available.')}</p>
+        <p className="text-center text-muted-foreground mt-6">{t('home.noForYouProducts', 'No recommendations available.')}</p>
       )}
     </div>
   );

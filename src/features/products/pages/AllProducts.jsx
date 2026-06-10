@@ -114,7 +114,7 @@ export default function AllProducts() {
         items={currentItems} 
         loading={isPageLoading} 
         skeletonCount={10} 
-        gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+        gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
       />
 
       {/* 🟢 تذييل الصفحة: التصفح (Pagination) وعدد المنتجات */}

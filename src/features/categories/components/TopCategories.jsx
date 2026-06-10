@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { useCategoryStore } from '../../categories/store';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+import { useCategoryStore } from '../store';
 import CategoryCard from './CategoryCard';
 import CategoryCardSkeleton from './CategoryCardSkeleton';
+import { Button } from '@/components/ui/button';
+import { ArrowRightFromLine } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Link } from 'react-router-dom';
-import { ArrowRightFromLine } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
+
+import { motion } from 'framer-motion';
+import { fadeUpVariant } from '../../../utils/animations';
 
 function TopCategories() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language.startsWith('ar');
-  const categories = useCategoryStore((state) => state.items).slice(0, 7);
+  const categories = useCategoryStore((state) => state.items);
   const loading = useCategoryStore((state) => state.isLoading);
 
   return (
     <>
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <CategoryCardSkeleton key={i} />
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4 mt-6">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <CategoryCardSkeleton key={index} />
           ))}
         </div>
       ) : categories.length > 0 ? (
         <div className="mt-2 mx-0">
-          <div className="flex  md:flex-row justify-between items-center md:mb-6 pb-4 md:pb-0">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUpVariant}
+            className="flex md:flex-row justify-between items-center md:mb-6 pb-4 md:pb-0"
+          >
             <p className="text-center text-lg md:text-4xl font-semibold text-foreground md:text-start">
               {t('home.topCategories', 'Top Categories')}
             </p>
@@ -38,9 +47,10 @@ function TopCategories() {
                 <ArrowRightFromLine className={`${isAr ? 'rotate-180' : ''} text-primary`} size={20} />
               </Link>
             </Button>
-          </div>
+          </motion.div>
 
-          <Swiper
+          <div className="mt-2">
+            <Swiper
             key={i18n.language}
             dir={isAr ? "rtl" : "ltr"}
             modules={[Navigation, Pagination, Autoplay]}
@@ -62,14 +72,21 @@ function TopCategories() {
             }}
             className="pb-2 mb-8 px-4 overflow-hidden"
           >
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <SwiperSlide key={category.id}>
-                <div className="px-1 pb-8 mb-4">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="px-1 pb-8 mb-4"
+                >
                   <CategoryCard category={category} />
-                </div>
+                </motion.div>
               </SwiperSlide>
             ))}
-          </Swiper>
+            </Swiper>
+          </div>
         </div>
       ) : (
         <p className="text-center text-muted-foreground mt-6">{t('home.noCategories', 'No categories available.')}</p>
