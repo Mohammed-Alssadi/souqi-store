@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 const PageLoader = () => {
   const { t } = useTranslation();
   return (
-    <div className="w-full flex items-center justify-center p-12 text-muted-foreground">
-      <Loader2 className="w-6 h-6 animate-spin mr-3" />
+    <div className="w-full min-h-[60vh] flex flex-col items-center justify-center p-12 text-muted-foreground">
+      <Loader2 className="w-10 h-10 animate-spin mb-4 text-primary/60" />
       <span className="text-sm font-medium animate-pulse">{t('common.loading', 'Loading...')}</span>
     </div>
   );

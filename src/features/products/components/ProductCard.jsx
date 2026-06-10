@@ -15,7 +15,7 @@ function ProductCard({ product }) {
   const addToCart = useCartStore((state) => state.addToCart);
 
   return (
-    <Card className="group border-border rounded-xl shadow-sm hover:shadow-xl hover:border-primary/40 hover:-translate-y-1.5 transition-all duration-500 relative flex flex-col h-full overflow-hidden p-0 bg-card">
+    <Card className="group border-border rounded-xl shadow-sm hover:shadow-xl hover:border-primary/40 hover:-translate-y- transition-all duration-500 relative flex flex-col h-full overflow-hidden p-0 bg-card">
       
       {/* الجزء القابل للنقر (الصورة والعنوان) */}
       <Link to={`/product/${id}`} className="flex flex-col flex-grow">
@@ -36,8 +36,8 @@ function ProductCard({ product }) {
         </div>
 
         {/* العنوان والتقييم */}
-        <CardContent className="px-4 pt-4 flex-grow pb-0">
-          <h2 className="text-base lg:text-lg font-medium text-card-foreground line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
+        <CardContent className="px-4 pt-4 flex-grow pb-0 flex flex-col">
+          <h2 className="text-base lg:text-lg font-medium text-card-foreground line-clamp-2 min-h-[3rem] leading-tight group-hover:text-primary transition-colors duration-300">
             {title}
           </h2>
           <div className="flex items-center text-sm text-muted-foreground mt-2.5">
@@ -54,7 +54,7 @@ function ProductCard({ product }) {
       {/* تفاصيل السعر والأزرار */}
       <div className="px-4 pb-4 pt-2 flex flex-col justify-end overflow-hidden relative">
           {/* السعر الموحد */}
-          <div className="flex mt-1 items-center gap-2 mb-2 group-hover:mb-0 transition-all duration-300">
+          <div className="flex mt-1 items-center gap-2 mb-2">
             <p className="text-xl font-bold text-red-600">
               ${price.toFixed(2)}
             </p>
@@ -63,8 +63,8 @@ function ProductCard({ product }) {
             )}
           </div>
 
-        {/* أزرار الشراء (تنزلق للأعلى عند التمرير في الشاشات الكبيرة) */}
-        <div className="flex justify-between items-stretch gap-2 mt-3 lg:translate-y-12 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 transition-all duration-300 ease-out">
+        {/* أزرار الشراء */}
+        <div className="flex justify-between items-stretch gap-2 mt-3">
           <Button 
             variant="outline"
             size="icon"

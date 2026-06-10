@@ -11,6 +11,13 @@ import { Toaster } from "./components/ui/sonner";
 import PageLoader from "./components/common/PageLoader";
 import FullScreenSplash from "./components/common/FullScreenSplash";
 
+// استيراد السكلتونات (Skeletons) ليتم تحميلها فوراً مع الحزمة الأساسية
+import HomeSkeleton from "./features/home/components/HomeSkeleton";
+import ProductsGridSkeleton from "./features/products/components/ProductsGridSkeleton";
+import ProductDetailsSkeleton from "./features/products/components/ProductDetailsSkeleton";
+import CategoriesSkeleton from "./features/categories/components/CategoriesSkeleton";
+import CartSkeleton from "./features/cart/components/CartSkeleton";
+
 // تحميل الصفحات ديناميكياً (Lazy Loading) لتحسين الأداء
 const Home = lazy(() => import("./features/home/pages/Home"));
 const AllProducts = lazy(() => import("./features/products/pages/AllProducts"));
@@ -82,9 +89,9 @@ function App() {
   // ===============================
   // 🚀 منطق شاشة البداية الافتتاحية
   // ===============================
-  const isProductLoading = useProductStore((state) => state.isLoading);
-  const isCategoryLoading = useCategoryStore((state) => state.isLoading);
-  const isAuthLoading = useAuthStore((state) => state.loading);
+  // const isProductLoading = useProductStore((state) => state.isLoading);
+  // const isCategoryLoading = useCategoryStore((state) => state.isLoading);
+  // const isAuthLoading = useAuthStore((state) => state.loading);
 
   const [showSplash, setShowSplash] = useState(() => !sessionStorage.getItem('hasSeenSplash'));
   const [isFadingOut, setIsFadingOut] = useState(false);
@@ -118,23 +125,24 @@ function App() {
           <Navbar />
 
           <main className="container mx-auto px-5 w-full min-h-[70vh]">
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* المستخدم */}
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<AllProducts />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route path="/category/:slug" element={<ProductByCategory />} />
-                <Route path="/categories" element={<AllCategories />} />
-                <Route path="/search" element={<SearchResultsPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<RegisterForm />} />
-                <Route path="/verify-email" element={<VerifyEmail />} />
-                {/* صفحة غير موجودة */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
+            <Routes>
+              {/* المستخدم */}
+              <Route path="/" element={<Suspense fallback={<HomeSkeleton />}><Home /></Suspense>} />
+              <Route path="/products" element={<Suspense fallback={<ProductsGridSkeleton />}><AllProducts /></Suspense>} />
+              <Route path="/product/:id" element={<Suspense fallback={<ProductDetailsSkeleton />}><ProductDetails /></Suspense>} />
+              <Route path="/category/:slug" element={<Suspense fallback={<ProductsGridSkeleton />}><ProductByCategory /></Suspense>} />
+              <Route path="/categories" element={<Suspense fallback={<CategoriesSkeleton />}><AllCategories /></Suspense>} />
+              <Route path="/search" element={<Suspense fallback={<ProductsGridSkeleton />}><SearchResultsPage /></Suspense>} />
+              <Route path="/cart" element={<Suspense fallback={<CartSkeleton />}><CartPage /></Suspense>} />
+              
+              {/* Auth and other pages */}
+              <Route path="/login" element={<Suspense fallback={<PageLoader />}><LoginForm /></Suspense>} />
+              <Route path="/register" element={<Suspense fallback={<PageLoader />}><RegisterForm /></Suspense>} />
+              <Route path="/verify-email" element={<Suspense fallback={<PageLoader />}><VerifyEmail /></Suspense>} />
+              
+              {/* صفحة غير موجودة */}
+              <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
+            </Routes>
           </main>
 
           <Footer />

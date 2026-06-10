@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper";
 import "swiper/css";
@@ -9,18 +10,9 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-
 export default function HeroBanner() {
   const { t, i18n } = useTranslation();
   const isAr = i18n?.language?.startsWith("ar") || false;
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200); // إعطاء السكلتون وقت ليظهر، وللمتصفح وقت ليرتاح قبل الأنيميشن
-    return () => clearTimeout(timer);
-  }, []);
-
   const slideData = t("home.heroBanner.slides", { returnObjects: true })?.[0] || {};
   
   // You can replace these with actual image paths later
@@ -30,41 +22,6 @@ export default function HeroBanner() {
     "/images/banner_fashion.png",
   ];
 
-  if (loading) {
-    return (
-      <div className="relative  overflow-hidden">
-        <div className="flex flex-col md:flex-row items-center h-[70vh] md:h-[80vh] w-full">
-          
-          {/* Skeleton Text Area */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center px-6 pt-10 pb-6 md:py-10 md:px-16 lg:px-24 h-auto md:h-full relative z-10">
-            <div className="flex flex-col items-start w-full">
-              {/* Badge */}
-              <Skeleton className="h-8 w-32 rounded-full mb-4 md:mb-6" />
-              
-              {/* Title */}
-              <Skeleton className="h-12 md:h-16 w-3/4 mb-4" />
-              <Skeleton className="h-12 md:h-16 w-2/3 mb-6" />
-              
-              {/* Subtitle */}
-              <Skeleton className="h-5 md:h-6 w-full max-w-lg mb-3" />
-              <Skeleton className="h-5 md:h-6 w-4/5 max-w-lg mb-6 md:mb-8" />
-              
-              {/* Buttons */}
-              <div className="flex flex-wrap gap-4 mt-2">
-                <Skeleton className="h-12 w-40 rounded-full" />
-                <Skeleton className="h-12 w-32 rounded-full" />
-              </div>
-            </div>
-          </div>
-          
-          {/* Skeleton Image Area */}
-          <div className="w-full md:w-1/2 h-[30vh] md:h-[90%] md:p-6 lg:p-10">
-            <Skeleton className="w-full h-full rounded-md md:rounded-lg shadow-sm" />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="relative  dark:bg-zinc-900/50  dark:border-zinc-800/50 overflow-hidden">
@@ -112,12 +69,16 @@ export default function HeroBanner() {
               variants={{ hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } } }}
               className="flex flex-wrap items-center gap-4 sm:gap-6"
             >
-              <Button size="lg" className="rounded-full px-6 sm:px-8 py-6 text-sm sm:text-base font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 group transition-all duration-300">
-                {slideData.btn1} 
-                {isAr ? <ArrowLeft className="ms-2 w-5 h-5 group-hover:-translate-x-1.5 transition-transform" /> : <ArrowRight className="ms-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform" />}
+              <Button asChild size="lg" className="rounded-full px-6 sm:px-8 py-6 text-sm sm:text-base font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 group transition-all duration-300">
+                <Link to="/products">
+                  {slideData.btn1} 
+                  {isAr ? <ArrowLeft className="ms-2 w-5 h-5 group-hover:-translate-x-1.5 transition-transform" /> : <ArrowRight className="ms-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform" />}
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full px-6 sm:px-8 py-6 text-sm sm:text-base font-bold border-2 border-zinc-200 dark:border-zinc-800 text-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:-translate-y-1 transition-all duration-300 shadow-sm">
-                {slideData.btn2}
+              <Button asChild variant="outline" size="lg" className="rounded-full px-6 sm:px-8 py-6 text-sm sm:text-base font-bold border-2 border-zinc-200 dark:border-zinc-800 text-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                <Link to="/categories">
+                  {slideData.btn2}
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

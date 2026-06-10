@@ -50,9 +50,11 @@ function ForYouSection() {
 
       {/* حالة التحميل */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <ProductCardSkeleton key={i} />
+        <div className="flex gap-3 md:gap-6 mt-2 pt-2 pb-2 mb-8 overflow-hidden">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[15%] shrink-0 px-1 mb-12">
+              <ProductCardSkeleton />
+            </div>
           ))}
         </div>
       ) : forYou.length > 0 ? (
@@ -79,7 +81,7 @@ function ForYouSection() {
               480: { slidesPerView: 2, spaceBetween: 15 },
               0: { slidesPerView: 1, spaceBetween: 0 },
             }}
-            className="pb-2 mb-8  overflow-hidden"
+            className="pt-2 pb-2 mb-8  overflow-hidden"
           >
             {forYou.map((product, index) => (
               <SwiperSlide key={product.id}>

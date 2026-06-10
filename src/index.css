@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -62,7 +64,7 @@
   }
   
   * {
-    font-family: 'Cairo', 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans Arabic', 'Roboto', sans-serif;
   }
   
   .font-brand, .font-brand * {

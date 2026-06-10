@@ -56,9 +56,11 @@ function DiscountedProducts() {
 
       {loading ? (
         // 🔄 عرض هيكل التحميل أثناء الانتظار
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <ProductCardSkeleton key={i} />
+        <div className="flex gap-3 md:gap-6 mt-2 pt-2 mb-8 overflow-hidden">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="w-[100%] min-[480px]:w-[48%] sm:w-[38%] md:w-[27%] lg:w-[23%] xl:w-[15%] shrink-0 px-1 pb-6 mb-4">
+              <ProductCardSkeleton />
+            </div>
           ))}
         </div>
       ) : discounted.length > 0 ? (
@@ -81,7 +83,7 @@ function DiscountedProducts() {
               480: { slidesPerView: 2, spaceBetween: 15 },
               0: { slidesPerView: 1, spaceBetween: 0 },
             }}
-            className=" mb-8 overflow-hidden "
+            className="pt-2 mb-8 overflow-hidden "
           >
             {discounted.map((product, index) => (
               <SwiperSlide key={product.id}>
