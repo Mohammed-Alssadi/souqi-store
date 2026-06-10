@@ -103,7 +103,7 @@ function App() {
         setShowSplash(false);
         sessionStorage.setItem('hasSeenSplash', 'true');
       }, 700); // مدة تلاشي الشاشة
-    }, 1000); // مدة عرض الشاشة الافتتاحية (ثانية واحدة)
+    }, 1300); // مدة عرض الشاشة الافتتاحية (ثانية واحدة)
 
     return () => clearTimeout(timer1);
   }, [showSplash]);
@@ -140,7 +140,7 @@ function App() {
           <Footer />
         </>
 
-        <Toaster position={i18n.language.startsWith('ar') ? 'top-left' : 'top-right'} richColors />
+        <Toaster position={i18n?.language?.startsWith('ar') ? 'top-left' : 'top-right'} richColors />
       </BrowserRouter>
     </ThemeProvider>
   );

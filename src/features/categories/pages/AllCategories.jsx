@@ -5,6 +5,7 @@ import { useCategoryStore } from '../../categories/store';
 import CategoryCard from '../components/CategoryCard';
 import CategoryCardSkeleton from '../components/CategoryCardSkeleton';
 import { Button } from '@/components/ui/button';
+import SEO from '../../../components/common/SEO';
 
 function AllCategories() {
     const { t } = useTranslation();
@@ -26,9 +27,14 @@ function AllCategories() {
 
 
     return (
-
-        <div className="min-h-[60vh] container mx-auto px-4">
-            <h1 className='my-6 text-3xl font-bold text-foreground'>{t('categories.allCategories', 'All Categories')}</h1>
+        <>
+            <SEO 
+                title={t('categories.allCategories', 'All Categories')}
+                description={t('categories.allCategoriesDesc', 'Browse all categories to find the products you need.')}
+                url="/categories"
+            />
+            <div className="min-h-[60vh] container mx-auto px-4">
+                <h1 className='my-6 text-3xl font-bold text-foreground'>{t('categories.allCategories', 'All Categories')}</h1>
 
 
 
@@ -57,9 +63,7 @@ function AllCategories() {
 
 
         </div>
-
-
-
+        </>
     )
 }
 

@@ -11,7 +11,7 @@ export function LangSwitch({ className }) {
     <div className={`flex items-center gap-1.5 ${className || ''}`}>
       <span className={`text-[10px] font-bold ${!isEn ? 'text-foreground dark:text-zinc-200' : 'text-muted-foreground'}`}>AR</span>
       <Switch
-        classNames="dark:bg-"
+        className="dark:bg-"
         checked={isEn}
         onCheckedChange={(checked) => i18n.changeLanguage(checked ? "en" : "ar")}
         icon={<Globe size={12} className="text-primary" />}

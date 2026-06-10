@@ -57,7 +57,7 @@ function TopCategories() {
               768: { slidesPerView: 4.5, spaceBetween: 20 },
               640: { slidesPerView: 4, spaceBetween: 15 },
               480: { slidesPerView: 2.5, spaceBetween: 15 },
-              380: { slidesPerView: 1.5, spaceBetween: 12 },
+              380: { slidesPerView: 1, spaceBetween: 0 },
               0: { slidesPerView: 1, spaceBetween: 0 },
             }}
             className="pb-2 mb-8 px-4 overflow-hidden"

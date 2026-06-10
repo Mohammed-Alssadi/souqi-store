@@ -15,6 +15,7 @@ import usePagination from "../../../hooks/usePagination";
 import SlidbarFilter from "../components/SlidbarFilter";
 import ProductGrid from "../components/ProductGrid";
 import Pagination from "../../../components/common/Pagination";
+import SEO from "../../../components/common/SEO";
 
 /**
  * صفحة عرض جميع المنتجات (All Products Page)
@@ -67,8 +68,14 @@ export default function AllProducts() {
   };
 
   return (
-    <div className="container py-4 md:py-5 px-1 min-h-[60vh]">
-      {/* 🟢 رأس الصفحة وأيقونة الفلترة */}
+    <>
+      <SEO 
+        title={t('products.title', 'Products')}
+        description={t('products.allProductsDesc', 'Browse all our products and find the best deals.')}
+        url="/products"
+      />
+      <div className="container py-4 md:py-5 px-1 min-h-[60vh]">
+        {/* 🟢 رأس الصفحة وأيقونة الفلترة */}
       <div className="flex justify-between items-center py-2 md:py-4 px-2 md:px-5 rounded-lg bg-card">
         <h1 className="text-lg md:text-3xl font-semibold">{t('products.title', 'Products')}</h1>
         <Button 
@@ -120,6 +127,7 @@ export default function AllProducts() {
           <Pagination pageCount={pageCount} onPageChange={handlePageClick} currentPage={currentPage} />
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

@@ -82,7 +82,7 @@ function HeroBanner() {
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover"
-                    fetchpriority={idx === 0 ? "high" : "auto"}
+                    fetchPriority={idx === 0 ? "high" : "auto"}
                     loading={idx === 0 ? "eager" : "lazy"}
                     decoding="async"
                   />
@@ -120,7 +120,7 @@ function HeroBanner() {
                   src="/images/offer1.jpg"
                   alt="offer1"
                   className="absolute inset-0 w-full h-full object-cover"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   loading="eager"
                 
                 />
@@ -130,7 +130,7 @@ function HeroBanner() {
                   src="/images/offer2.jpg"
                   alt="offer2"
                   className="absolute inset-0 w-full h-full object-cover"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   loading="eager"
          
                 />

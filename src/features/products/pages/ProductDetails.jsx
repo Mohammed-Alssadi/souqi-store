@@ -13,6 +13,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import PageLoader from "../../../components/common/PageLoader";
+import SEO from "../../../components/common/SEO";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -65,8 +66,16 @@ function ProductDetails() {
     }
 
   return (
-    <div className="container mx-auto px-2 md:px-6 py-4 md:py-5 min-h-[80vh]">
-      <Button variant="link" className="text-primary hover:text-primary/80 font-medium mb-2 md:mb-6 px-0" asChild>
+    <>
+      <SEO 
+        title={localizedTitle}
+        description={localizedDescription}
+        image={product?.image}
+        type="product"
+        url={`/product/${id}`}
+      />
+      <div className="container mx-auto px-2 md:px-6 py-4 md:py-5 min-h-[80vh]">
+        <Button variant="link" className="text-primary hover:text-primary/80 font-medium mb-2 md:mb-6 px-0" asChild>
         <Link to="/#products" className="flex items-center gap-1">
           <span className={isAr ? "rotate-180 inline-block" : "inline-block"}>&larr;</span> {t('product.backToProducts', 'Back To Products')}
         </Link>
@@ -93,7 +102,7 @@ function ProductDetails() {
                   alt={item.alt} 
                   className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-110" 
                   loading={idx === 0 ? "eager" : "lazy"} 
-                  fetchpriority={idx === 0 ? "high" : "auto"}
+                  fetchPriority={idx === 0 ? "high" : "auto"}
                   decoding={idx === 0 ? "sync" : "async"}
                 />
               </SwiperSlide>
@@ -259,10 +268,10 @@ function ProductDetails() {
           <p>
             {localizedAbout}
           </p>
-         
         </div>
       </div>
     </div>
+    </>
   );
 }
 

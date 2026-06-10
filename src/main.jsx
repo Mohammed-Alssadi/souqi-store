@@ -8,10 +8,14 @@ import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
 
 
+import { HelmetProvider } from 'react-helmet-async';
+
 // استيراد إعدادات الترجمة
 import './i18n';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
   </StrictMode>,
 )

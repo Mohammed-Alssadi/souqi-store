@@ -111,5 +111,17 @@
   },
   "cart": {
     "addedSuccess": "Added to cart successfully!"
+  },
+  "home": {
+    "title": "Home",
+    "desc": "Discover the best products and exclusive offers at Souqi. Shop now!"
+  },
+  "products": {
+    "title": "Products",
+    "allProductsDesc": "Browse all our products and find the best deals."
+  },
+  "categories": {
+    "allCategories": "All Categories",
+    "allCategoriesDesc": "Browse all categories to find the products you need."
   }
 }

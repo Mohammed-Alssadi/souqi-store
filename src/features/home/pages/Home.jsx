@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ProductCard from '../../products/components/ProductCard';
 import DiscountedProducts from '../../products/components/DiscountedProducts';
 import Footer from '../../../components/layout/Footer';
@@ -9,15 +10,22 @@ import ForYouSection from '../../products/components/ForYouSection';
 import Delivery from '../components/Delivery';
 import TopCategories from '../../categories/components/TopCategories';
 import Cart from '../../cart/components/Cart';
+import SEO from '../../../components/common/SEO';
 
 // import { useDispatch } from 'react-redux';
 // import { setSelectedCategory } from '../features/products/productSlice';
 function Home() {
-
+  const { t } = useTranslation();
 
   return (
-    <div className='w-full px-2 sm:px-4 md:container md:mx-auto md:px-5'>
-     <HeroBaner/>
+    <>
+      <SEO 
+        title={t('home.title', 'Home')}
+        description={t('home.desc', 'Discover the best products and exclusive offers at Souqi. Shop now!')}
+        url="/"
+      />
+      <div className='w-full px-2 sm:px-4 md:container md:mx-auto md:px-5'>
+       <HeroBaner/>
 
        
         <div id="categories" className="mt-5 pt-5 md:mt-10 md:pt-10">
@@ -40,8 +48,7 @@ function Home() {
         </section>
        
       </div>
-
-
+    </>
   );
 }
 

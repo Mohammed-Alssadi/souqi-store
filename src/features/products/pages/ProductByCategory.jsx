@@ -13,6 +13,7 @@ import usePagination from '../../../hooks/usePagination';
 import ProductGrid from '../components/ProductGrid';
 import Pagination from '../../../components/common/Pagination';
 import PageLoader from '../../../components/common/PageLoader';
+import SEO from '../../../components/common/SEO';
 
 /**
  * صفحة عرض المنتجات حسب التصنيف (Products by Category Page)
@@ -73,12 +74,21 @@ export default function ProductByCategory() {
     );
   }
 
+  const categoryName = isAr ? currentCategory.name_ar : currentCategory.name_en;
+
   return (
-    <div className="container mx-auto px-2 md:px-4 py-2 md:py-8 min-h-[50vh]">
-      {/* 🟢 عنوان التصنيف */}
-      <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-8 md:pt-4 text-start text-foreground">
-        {isAr ? currentCategory.name_ar : currentCategory.name_en}
-      </h1>
+    <>
+      <SEO 
+        title={categoryName}
+        description={`${t('products.title', 'Products')} - ${categoryName}`}
+        image={currentCategory.image}
+        url={`/category/${slug}`}
+      />
+      <div className="container mx-auto px-2 md:px-4 py-2 md:py-8 min-h-[50vh]">
+        {/* 🟢 عنوان التصنيف */}
+        <h1 className="text-2xl md:text-4xl font-bold mb-4 md:mb-8 md:pt-4 text-start text-foreground">
+          {categoryName}
+        </h1>
 
       {/* 🟢 رسالة عند عدم وجود منتجات في هذا التصنيف */}
       {!loading && filteredProducts.length === 0 ? (
@@ -115,6 +125,7 @@ export default function ProductByCategory() {
           )}
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 }

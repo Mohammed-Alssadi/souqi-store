@@ -5,8 +5,13 @@ import { useTranslation } from 'react-i18next';
 const FullScreenSplash = ({ isFadingOut }) => {
   const { t, i18n } = useTranslation();
 
+  const isAr = i18n?.language?.startsWith('ar') || false;
+
   return (
-    <div className={`fixed inset-0 z-[9999] bg-background flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div
+      dir={isAr ? 'rtl' : 'ltr'}
+      className={`fixed inset-0 z-[9999] bg-background flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+    >
       <div className="relative flex items-center justify-center">
         {/* Animated rings for a professional splash look */}
         <div className="absolute w-32 h-32 border-4 border-primary/20 rounded-full animate-ping duration-1000"></div>
@@ -14,7 +19,7 @@ const FullScreenSplash = ({ isFadingOut }) => {
 
         {/* Logo Mockup */}
         <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-2xl z-10 animate-bounce">
-          <span className="text-primary-foreground font-bold text-3xl">S</span>
+          <span className="text-primary-foreground font-bold text-4xl">S</span>
         </div>
       </div>
 
@@ -23,10 +28,11 @@ const FullScreenSplash = ({ isFadingOut }) => {
           {i18n.language.startsWith('ar') ? 'سوقي' : 'Souqi'}
         </h1>
         <div className="flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          <span className="text-sm font-medium tracking-wide animate-pulse">
+
+          <span className="text-md text-primary/80 tracking-wide animate-pulse">
             {t('common.loading', 'Loading...')}
           </span>
+          <Loader2 className="w-5 h-5 animate-spin text-primary/80 " />
         </div>
       </div>
     </div>
